@@ -194,24 +194,38 @@ export default {
 
     // 冻结账户
     handleDelete(id) {
-      deleteUser({ id: id, status: true }).then((response) => {
-        if (response.data === -1) {
-          this.$message.error('冻结失败')
-        } else {
-          this.$message.success('冻结成功')
-        }
-        this.fetchData()
+      this.$confirm('是否冻结账户？', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteUser({ id: id, status: true }).then((response) => {
+          if (response.data === -1) {
+            this.$message.error('冻结失败')
+          } else {
+            this.$message.success('冻结成功')
+          }
+          this.fetchData()
+        })
       })
     },
     // 解冻账户
     handleOpen(id) {
-      deleteUser({ id: id, status: false }).then((response) => {
-        if (response.data === -1) {
-          this.$message.error('解冻失败')
-        } else {
-          this.$message.success('解冻成功')
-        }
-        this.fetchData()
+      this.$confirm('是否解冻账户？', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteUser({ id: id, status: false }).then((response) => {
+          if (response.data === -1) {
+            this.$message.error('解冻失败')
+          } else {
+            this.$message.success('解冻成功')
+          }
+          this.fetchData()
+        })
+      }).catch(() => {
+        // 取消调用catch
       })
     },
 
