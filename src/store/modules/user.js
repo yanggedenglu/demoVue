@@ -30,18 +30,17 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    console.log("============================ store login")
-    console.log(userInfo)
+    // console.log("============================ store login")
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       apiLogin({ username: username.trim(), password: password }).then(response => {
         const { data } = response
         // commit('SET_TOKEN', data.token)
         // setToken(data.token)
-        console.log("============================ data"+data.id)
+        // console.log("============================ data"+data.id)
         commit('SET_TOKEN', data.id)
         setToken(data.id)
-        resolve()
+        resolve(response)
       }).catch(error => {
         reject(error)
       })
@@ -50,7 +49,7 @@ const actions = {
 
   // get user info
   getInfo({ commit, state }) {
-    console.log("============================ store getinfo"+state.token)
+    // console.log("============================ store getinfo"+state.token)
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
         console.log(response)
@@ -95,18 +94,12 @@ const actions = {
   },
 
   // store register
-  register({commit}, ruleForm){
-    console.log("============================ store register")
-    
+  register({ commit }, ruleForm) {
+    // console.log("============================ store register")
     console.log(ruleForm)
-    const { username, password ,email} = ruleForm
+    const { username, password, email } = ruleForm
     return new Promise((resolve, reject) => {
-      register({ username: username, password: password, email: email}).then(response => {
-        const { data } = response
-        // commit('SET_TOKEN', data.token)
-        // setToken(data.token)  
-        console.log("============================ data"+data)
-       
+      register({ username: username, password: password, email: email }).then(response => {
         resolve()
       }).catch(error => {
         reject(error)
@@ -114,22 +107,17 @@ const actions = {
     })
   },
 
-  //store email
-  email({commit}, ruleForm){
-    console.log("============================ store email")
-    
+  // store email
+  email({ commit }, ruleForm) {
     const { email } = ruleForm
     return new Promise((resolve, reject) => {
-      sendEmail({email: email}).then(response => {
-        const { data } = response
-
+      sendEmail({ email: email }).then(response => {
         resolve()
       }).catch(error => {
         reject(error)
       })
     })
   }
-  
 }
 
 export default {

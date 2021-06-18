@@ -1,7 +1,11 @@
 <template>
   <div :class="{'has-logo':showLogo}">
+    <!-- logo -->
     <logo v-if="showLogo" :collapse="isCollapse" />
+    <!-- 菜单栏 -->
+    <!-- el-scrollbar滚动条 -->
     <el-scrollbar wrap-class="scrollbar-wrapper">
+      <!-- default-active当前激活菜单的index  , mode模式（horizontal / vertical） , collapse是否水平折叠收起菜单 -->
       <el-menu
         :default-active="activeMenu"
         :collapse="isCollapse"
@@ -12,6 +16,7 @@
         :collapse-transition="false"
         mode="vertical"
       >
+        <!-- 遍历路由信息 -->
         <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path" />
       </el-menu>
     </el-scrollbar>
@@ -31,6 +36,8 @@ export default {
       'sidebar'
     ]),
     routes() {
+      console.log(this.$router.options.routes)
+      // 获取router中的路由列表
       return this.$router.options.routes
     },
     activeMenu() {

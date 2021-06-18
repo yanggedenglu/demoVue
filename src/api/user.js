@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 export function login(data) {
-  console.log("============================ api login")
+  // console.log("============================ api login")
   return request({
     // url: '/vue-admin-template/user/login',
     url: 'http://localhost:8000/user/login',
@@ -28,7 +28,7 @@ export function logout() {
 
 // 注册方法
 export function register(data) {
-  console.log("============================ api register")
+  // console.log("============================ api register")
   return request({
     // url: '/vue-admin-template/user/login',
     url: 'http://localhost:8000/user/',
@@ -39,7 +39,6 @@ export function register(data) {
 
 //email 发送邮件
 export function sendEmail(data) {
-  console.log("=============api email")
   return request({
     url: "http://localhost:8000/user/sendMail?email="+data.email,
     method: 'post'

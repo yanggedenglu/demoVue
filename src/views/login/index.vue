@@ -43,17 +43,17 @@
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
 
-      <!-- 跳转注册页 
+      <!-- 跳转注册页
        @click.native.prevent
          1、在封装好的组件上使用，所以要加上.native才能click。
          2、prevent是用来阻止默认的事件。就相当于…event.preventDefault()，父组件想在子组件上监听自己的click的话，需要加上native修饰符。
       -->
       <el-button type="success" style="width:100%;margin-bottom:30px;margin-left:0px" @click="handleRegister">Register</el-button>
 
-      <div class="tips">
+      <!-- <div class="tips">
         <span style="margin-right:20px;">username: admin</span>
         <span> password: any</span>
-      </div>
+      </div> -->
 
     </el-form>
   </div>
@@ -73,7 +73,7 @@ export default {
       }
     }
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 3) {
+      if (value.length < 3 || value.length > 6) {
         callback(new Error('The password can not be less than 6 digits'))
       } else {
         callback()
@@ -116,21 +116,29 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
-            this.loading = false
-          }).catch(() => {
+          this.$store.dispatch('user/login', this.loginForm).then((response) => {
+            if (response.data.delFlag === true) {
+              this.$message.error('账户已被冻结')
+              this.loading = false
+            } else {
+              this.$router.push({ path: this.redirect || '/' })
+              this.$message.success('登录成功')
+              this.loading = false
+            }
+          }).catch((error) => {
+            console.log(error)
+            this.$message.error('登录失败，用户名或密码错误')
             this.loading = false
           })
         } else {
-          console.log('error submit!!')
+          this.$message.error('用户名或密码输入格式不正确')
           return false
         }
       })
     },
     // 注册
-    handleRegister(){
-      this.$router.push('/email');
+    handleRegister() {
+      this.$router.push('/register')
     }
 
   }

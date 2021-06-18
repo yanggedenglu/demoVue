@@ -1,20 +1,20 @@
 <template>
   <div class="register">
     <el-form
+      ref="ruleForm"
       :model="ruleForm"
       :rules="rules"
-      ref="ruleForm"
       label-width="100px"
       class="demo-ruleForm"
     >
       <el-form-item label="admin" prop="username">
-        <el-input v-model="ruleForm.username"></el-input>
+        <el-input v-model="ruleForm.username" />
       </el-form-item>
       <el-form-item label="password" prop="password">
-        <el-input v-model="ruleForm.password" type="password"></el-input>
+        <el-input v-model="ruleForm.password" type="password" />
       </el-form-item>
       <el-form-item label="email" prop="email">
-        <el-input v-model="ruleForm.email"></el-input>
+        <el-input v-model="ruleForm.email" />
       </el-form-item>
 
       <el-form-item>
@@ -28,28 +28,28 @@
 // import { validUsername } from '@/utils/validate'
 
 export default {
-  name: "Register",
+  name: 'Register',
   data() {
     var checkEmail = (rule, value, callback) => {
-      let check =
-        /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/;
+      const check =
+        /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/
       if (check.test(this.ruleForm.email)) {
         // this.$message.success("email ok");
-        callback();
+        callback()
       } else {
-        callback(new Error("email no"));
+        callback(new Error('邮箱格式不正确'))
         // this.$message.error("email no");
       }
-    };
+    }
     return {
       ruleForm: {
-        username: "3333",
-        password: "3333",
-        email: "33@qq.com",
+        username: '3333',
+        password: '3333',
+        email: '33@qq.com'
       },
       rules: {
         username: [
-          { required: true, messsage: "username", trigger: "blur" },
+          { required: true, messsage: 'username', trigger: 'blur' }
           // {
           //   min: 3,
           //   max: 6,
@@ -58,39 +58,37 @@ export default {
           // },
         ],
         password: [
-          { required: true, message: "password", trigger: "blur" },
+          { required: true, message: 'password', trigger: 'blur' },
           {
             min: 3,
             max: 6,
-            message: "3-6",
-            trigger: "blur",
-          },
+            message: '3-6',
+            trigger: 'blur'
+          }
         ],
-        email: [{ validator: checkEmail, trigger: "blur" }],
-      },
-    };
+        email: [{ validator: checkEmail, trigger: 'blur' }]
+      }
+    }
   },
   methods: {
+    // 注册方法
     RegisterForm() {
-      console.log(this.ruleForm)
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           this.$store.dispatch('user/register', this.ruleForm).then(() => {
-            console.log("register---ok")
             this.$router.push('/login')
-            this.$message.success("register----ok")
+            this.$message.success('注册成功，请登录')
           }).catch(() => {
-             console.log("register---error")
+            this.$message.error('注册失败，用户名已存在')
           })
         } else {
-          console.log('error submit!!')
+          this.$message.error('校验信息失败')
           return false
         }
       })
-  
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style scoped>
