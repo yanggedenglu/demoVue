@@ -35,11 +35,17 @@ const actions = {
     return new Promise((resolve, reject) => {
       apiLogin({ username: username.trim(), password: password }).then(response => {
         const { data } = response
+        if (data.delFlag === true) {
+          
+        } else {
+          commit('SET_NAME', data.username)
+          commit('SET_TOKEN', data.id)
+          setToken(data.id)
+        }
         // commit('SET_TOKEN', data.token)
         // setToken(data.token)
         // console.log("============================ data"+data.id)
-        commit('SET_TOKEN', data.id)
-        setToken(data.id)
+       
         resolve(response)
       }).catch(error => {
         reject(error)

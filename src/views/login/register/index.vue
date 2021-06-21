@@ -104,6 +104,7 @@ export default {
             } else {
               this.$router.push('/login')
               this.$message.success('注册成功，请登录')
+              localStorage.removeItem('sessionId')
             }
           }).catch((error) => {
             console.log(error)
