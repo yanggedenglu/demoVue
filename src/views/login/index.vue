@@ -131,7 +131,7 @@ export default {
             this.loading = false
           })
         } else {
-          this.$message.error('用户名或密码输入格式不正确')
+          this.$message.error('用户名或密码不正确')
           return false
         }
       })

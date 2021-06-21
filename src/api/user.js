@@ -31,16 +31,16 @@ export function register(data) {
   // console.log("============================ api register")
   return request({
     // url: '/vue-admin-template/user/login',
-    url: 'http://localhost:8000/user/',
+    url: 'http://localhost:8000/user/' + data.code + '/' + data.sessionId,
     method: 'post',
     data
   })
 }
 
-//email 发送邮件
+// email 发送邮件
 export function sendEmail(data) {
   return request({
-    url: "http://localhost:8000/user/sendMail?email="+data.email,
+    url: 'http://localhost:8000/user/sendMail?email=' + data.email,
     method: 'post'
   })
 }

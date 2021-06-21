@@ -96,12 +96,13 @@ const actions = {
   // store register
   register({ commit }, ruleForm) {
     // console.log("============================ store register")
-    console.log(ruleForm)
-    const { username, password, email } = ruleForm
+    // console.log(ruleForm)
+    const { username, password, email, code, sessionId } = ruleForm
     return new Promise((resolve, reject) => {
-      register({ username: username, password: password, email: email }).then(response => {
-        resolve()
+      register({ username: username, password: password, email: email, code: code, sessionId: sessionId }).then(response => {
+        resolve(response)
       }).catch(error => {
+        console.log(error)
         reject(error)
       })
     })
@@ -112,7 +113,7 @@ const actions = {
     const { email } = ruleForm
     return new Promise((resolve, reject) => {
       sendEmail({ email: email }).then(response => {
-        resolve()
+        resolve(response)
       }).catch(error => {
         reject(error)
       })
