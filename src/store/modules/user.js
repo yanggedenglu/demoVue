@@ -35,9 +35,10 @@ const actions = {
     return new Promise((resolve, reject) => {
       apiLogin({ username: username.trim(), password: password }).then(response => {
         const { data } = response
-        if (data.delFlag === true) {
+        if (data.delFlag === true) {  
           
         } else {
+          // commit 提交 mutations 中的方法
           commit('SET_NAME', data.username)
           commit('SET_TOKEN', data.id)
           setToken(data.id)
