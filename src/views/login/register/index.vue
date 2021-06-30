@@ -96,7 +96,6 @@ export default {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           this.$store.dispatch('user/register', this.ruleForm).then((response) => {
-            console.log(response.data)
             if (response.data === -2) {
               this.$message.error('验证码错误')
             } else if (response.data === -1) {

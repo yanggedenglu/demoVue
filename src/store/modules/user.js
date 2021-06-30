@@ -1,7 +1,6 @@
 import { login as apiLogin, logout, getInfo, register, sendEmail } from '@/api/user'
-import { getToken, setToken, removeToken, getCookie, setCookie, removeCookie } from '@/utils/auth'
+import { getToken, setToken, removeToken, setCookie } from '@/utils/auth'
 import { resetRouter } from '@/router'
-import Cookies from 'js-cookie'
 
 const getDefaultState = () => {
   return {
@@ -37,7 +36,7 @@ const actions = {
       apiLogin({ username: username.trim(), password: password }).then(response => {
         const { data } = response
         if (data.delFlag === true) {
-
+          console.log('账户被冻结')
         } else {
           // commit 提交 mutations 中的方法
           commit('SET_NAME', data.username)
@@ -46,7 +45,6 @@ const actions = {
 
           // 插入到测试cookie中
           setCookie(data.username)
-          console.log('cookie-----' + Cookies.get())
         }
         resolve(response)
       }).catch(error => {
@@ -60,7 +58,6 @@ const actions = {
     // console.log("============================ store getinfo"+state.token)
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
-        console.log(response)
         const { data } = response
 
         if (!data) {
@@ -68,7 +65,6 @@ const actions = {
         }
 
         const { name, avatar } = data
-
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
         resolve(data)

@@ -1,7 +1,6 @@
 <template>
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-
       <div class="title-container">
         <h3 class="title">Login Form</h3>
       </div>
@@ -54,7 +53,6 @@
         <span style="margin-right:20px;">username: admin</span>
         <span> password: any</span>
       </div> -->
-
     </el-form>
   </div>
 </template>
@@ -119,14 +117,12 @@ export default {
           this.$store.dispatch('user/login', this.loginForm).then((response) => {
             if (response.data.delFlag === true) {
               this.$message.error('账户已被冻结')
-              this.loading = false
             } else {
               this.$router.push({ path: this.redirect || '/' })
               this.$message.success('登录成功')
-              this.loading = false
             }
-          }).catch((error) => {
-            console.log(error)
+            this.loading = false
+          }).catch(() => {
             this.$message.error('登录失败，用户名或密码错误')
             this.loading = false
           })

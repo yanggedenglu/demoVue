@@ -20,7 +20,6 @@ export function deleteUser(params) {
 }
 
 export function editUser(data) {
-  console.log(data)
   return request({
     url: 'http://localhost:8000/user/',
     method: 'put',

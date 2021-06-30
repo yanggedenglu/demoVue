@@ -9,9 +9,9 @@ import getPageTitle from '@/utils/get-page-title'
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 //  白名单
-const whiteList = ['/login','/register','/email'] // no redirect whitelist
+const whiteList = ['/login', '/register', '/email'] // no redirect whitelist
 
-// 路由前调用
+// 全局钩子-----路由前调用
 router.beforeEach(async(to, from, next) => {
   console.log(to.path)
 
@@ -36,7 +36,7 @@ router.beforeEach(async(to, from, next) => {
       } else {
         try {
           // get user info
-          console.log("===================================== getInfo")
+          console.log('hasgetUserInfo------' + hasGetUserInfo)
           await store.dispatch('user/getInfo')
 
           next()

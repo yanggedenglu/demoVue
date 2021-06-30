@@ -243,7 +243,6 @@ export default {
         username: this.editForm.username,
         email: this.editForm.email
       }).then((response) => {
-        console.log(response.data)
         if (response.data === 1) {
           this.dialogFormVisible = false
           this.$message.success('修改信息成功')
