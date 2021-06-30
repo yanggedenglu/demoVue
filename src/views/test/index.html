@@ -1,0 +1,41 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Vue 测试实例 </title>
+    <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        {{time}}
+        <br>
+        {{datails()}}
+        <!-- v-bind绑定页面中的元素属性。例如：a的href属性，img的src、alt和title属性。  v-bind:元素的属性名 = “data中键名”-->
+        <!-- v-show="判断表达式" true显示，false不显示 -->
+        <p v-show="see">1111</p>
+        <ul v-for="l in list" >
+            <ul>{{l}}</ul>
+        </ul>
+        <!-- v-on对页面中的事件进行绑定   v-on:事件类型=“事件处理函数名” 缩写： @事件类型=“事件处理函数名”-->
+        <button @click="clickMe">click  me</button>
+    </div>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                time: '2021-01',
+                url: 'www.baidu.com',
+                see: true,
+                list: ['111', '222', '333']
+            },
+            methods: {
+                datails: function() {
+                    return this.url + '---hhh'
+                },
+                clickMe: function() {
+                    return alert('click me')
+                }
+            }
+        })
+    </script>
+</body>
+</html>
