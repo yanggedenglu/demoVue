@@ -5,6 +5,7 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '@/layout'
+import { title } from '@/settings'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -81,6 +82,12 @@ export const constantRoutes = [
         component: () => import('@/views/table/index'),
         meta: { title: '用户信息', icon: 'table' }
       },
+      {
+        path: 'test',
+        name: 'Test',
+        component: () => import('@/views/test/index'),
+        meta: { title: 'test', icon: 'table' }
+      }
       // {
       //   path: 'tree',
       //   name: 'Tree',
@@ -173,12 +180,11 @@ export const constantRoutes = [
   //   ]
   // },
 
-
-
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
 
+// 实例化vue的时候只挂载constantRouter
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),

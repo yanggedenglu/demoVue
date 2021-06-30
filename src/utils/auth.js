@@ -13,3 +13,16 @@ export function setToken(token) {
 export function removeToken() {
   return Cookies.remove(TokenKey)
 }
+
+// 测试cookie
+const TestCookie = 'yanggedenglu'
+
+export function getCookie() {
+  return Cookies.get(TestCookie)
+}
+export function setCookie(token) {
+  return Cookies.set(TestCookie, token)
+}
+export function removeCookie() {
+  return Cookies.remove(TestCookie)
+}

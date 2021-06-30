@@ -1,6 +1,7 @@
 import { login as apiLogin, logout, getInfo, register, sendEmail } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getToken, setToken, removeToken, getCookie, setCookie, removeCookie } from '@/utils/auth'
 import { resetRouter } from '@/router'
+import Cookies from 'js-cookie'
 
 const getDefaultState = () => {
   return {
@@ -35,18 +36,18 @@ const actions = {
     return new Promise((resolve, reject) => {
       apiLogin({ username: username.trim(), password: password }).then(response => {
         const { data } = response
-        if (data.delFlag === true) {  
-          
+        if (data.delFlag === true) {
+
         } else {
           // commit 提交 mutations 中的方法
           commit('SET_NAME', data.username)
           commit('SET_TOKEN', data.id)
           setToken(data.id)
+
+          // 插入到测试cookie中
+          setCookie(data.username)
+          console.log('cookie-----' + Cookies.get())
         }
-        // commit('SET_TOKEN', data.token)
-        // setToken(data.token)
-        // console.log("============================ data"+data.id)
-       
         resolve(response)
       }).catch(error => {
         reject(error)

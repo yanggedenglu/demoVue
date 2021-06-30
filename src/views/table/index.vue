@@ -111,7 +111,6 @@
         <el-button type="primary" @click="editPass('editPassForm')">确 定</el-button>
       </div>
     </el-dialog>
-
   </div>
 </template>
 

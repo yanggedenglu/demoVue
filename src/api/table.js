@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// export 参数  data params
+// export funtion  方法名（参数：data params）
 
 export function getList(params) {
   return request({
@@ -28,10 +28,10 @@ export function editUser(data) {
   })
 }
 
-export function editPass(data){
+export function editPass(data) {
   return request({
     url: 'http://localhost:8000/user/updatePass',
     method: 'post',
-    params: {id: data.id, oldPass: data.oldPass, newPass: data.newPass }
+    params: { id: data.id, oldPass: data.oldPass, newPass: data.newPass }
   })
 }
