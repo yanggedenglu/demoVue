@@ -81,6 +81,12 @@ export const constantRoutes = [
         name: 'Table',
         component: () => import('@/views/table/index'),
         meta: { title: '用户信息', icon: 'table' }
+      },
+      {
+        path: 'test',
+        name: 'ComIndex',
+        component: () => import('@/views/test/index'),
+        meta: { title: '组件', icon: 'table' }
       }
       // {
       //   path: 'tree',
