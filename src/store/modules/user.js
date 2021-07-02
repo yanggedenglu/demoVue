@@ -1,5 +1,5 @@
-import { login as apiLogin, logout, getInfo, register, sendEmail } from '@/api/user'
-import { getToken, setToken, removeToken, setCookie } from '@/utils/auth'
+import { login as apiLogin, logout, getInfo, register, sendEmail, exit } from '@/api/user'
+import { getToken, setToken, removeToken, setCookie, removeCookie } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
@@ -40,11 +40,13 @@ const actions = {
         } else {
           // commit 提交 mutations 中的方法
           commit('SET_NAME', data.username)
+          // SET_TOKEN
           commit('SET_TOKEN', data.id)
-          setToken(data.id)
 
+          // 
+          setToken(data.id)
           // 插入到测试cookie中
-          setCookie(data.username)
+          setCookie(data.token)
         }
         resolve(response)
       }).catch(error => {
@@ -78,9 +80,13 @@ const actions = {
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
       logout(state.token).then(() => {
-        removeToken() // must remove  token  first
+        // must remove  token  first 清楚cookie
+        removeToken() 
+        removeCookie()
         resetRouter()
         commit('RESET_STATE')
+        // 后端方法
+        exit()
         resolve()
       }).catch(error => {
         reject(error)

@@ -44,3 +44,11 @@ export function sendEmail(data) {
     method: 'post'
   })
 }
+
+// 退出
+export function exit() {
+  return request({
+    url: 'http://localhost:8000/user/exit',
+    method: 'get'
+  })
+}
