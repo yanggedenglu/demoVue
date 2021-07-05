@@ -8,7 +8,6 @@
     <ButtonCom2 ref="ButtonCom2" buttonw="prop传值--buttom2" @enlargetwo="reduce" />
 
     <el-button @click.once="getTitle()">点击回调组件</el-button><br>
-    
   </div>
 </template>
 
@@ -44,5 +43,19 @@ export default {
 </script>
 
 <style>
-
+/*  
+  new Vue
+  ...init
+  beforCreate()
+  created()
+  ...
+  beforemount()
+  mounted()
+  ...
+  beforeUpdate()
+  updated()
+  ...
+  beforeDestory()
+  distoryed()
+ */
 </style>
