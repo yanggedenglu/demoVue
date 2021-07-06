@@ -106,14 +106,14 @@ export const constantRoutes = [
     path: '/study',
     name: 'study',
     redirect: '/study/main',
-    meta: {title: "study", icon: 'eye'},
+    meta: { title: "study", icon: 'eye' },
     component: Layout,
     children: [
       {
         path: 'main',
         name: 'main',
         component: () => import('@/study/main/index'),
-        meta: {title: 'main' , icon: 'form'}
+        meta: { title: 'main' , icon: 'form' }
       }
     ]
   },
