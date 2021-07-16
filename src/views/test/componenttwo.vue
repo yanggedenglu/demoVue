@@ -10,7 +10,7 @@ export default {
   props: ['buttonw'],
   data() {
     return {
-        message: 'dajihao'
+      message: 'dajihao'
     }
   },
   methods: {

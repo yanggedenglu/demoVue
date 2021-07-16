@@ -4,8 +4,8 @@
     <slot name="first">子组件1</slot>
     <slot name="second">子组件2</slot>
     <!-- child 自定义名字 -->
-    <slot name="yu" :child="data"></slot>
-    <slot name="yuyu" :childhh="hh"></slot>
+    <slot name="yu" :child="data" />
+    <slot name="yuyu" :childhh="hh" />
   </div>
 </template>
 

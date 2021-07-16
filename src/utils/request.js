@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
-import { getCookie, getToken } from '@/utils/auth'
+import { getCookie } from '@/utils/auth'
 // 封装axios
 // create an axios instance 创建一个axios实例
 const service = axios.create({
@@ -14,7 +14,7 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     // do something before request is sent
-    console.log("store.getters.token----" + store.getters.token)
+    console.log('store.getters.token----' + store.getters.token)
     if (store.getters.token) {
       // let each request carry token
       // ['X-Token'] is a custom headers key

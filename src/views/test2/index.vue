@@ -17,7 +17,8 @@
       <!-- 父子组件间props  -->
       <el-col :span="6">{{ layout }}</el-col>
       <el-col :span="6">{{ likes }}</el-col>
-      <el-col :span="6">{{ published }},{{ comment[0] }},{{ author.name }}</el-col>
+      <!-- 父组件传值给子组件 -->
+      <!-- <el-col :span="6">{{ published }},{{ comment[0] }},{{ author.name }}</el-col> -->
     </el-row>
     <!-- v-solt 插槽 -->
     <el-row>
@@ -32,7 +33,7 @@
         <slot name="foot" />
       </el-col>
       <el-col>
-        <slot name="value"  />
+        <slot name="value" />
       </el-col>
     </el-row>
   </div>
@@ -43,13 +44,13 @@ export default {
   props: {
     layout: String,
     likes: Number,
-    published : Boolean,
+    published: Boolean,
     comment: Array,
     author: Object
   },
   data() {
     return {
-      childData: {  
+      childData: {
         name: 'child',
         age: 20
       }
