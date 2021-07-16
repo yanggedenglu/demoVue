@@ -1,14 +1,14 @@
 <template>
   <div class="email">
     <el-form
+      ref="ruleForm"
       :model="ruleForm"
       :rules="rules"
-      ref="ruleForm"
       label-width="100px"
       class="demo-ruleForm"
     >
       <el-form-item label="邮箱" prop="email">
-        <el-input v-model="ruleForm.email"></el-input>
+        <el-input v-model="ruleForm.email" />
       </el-form-item>
 
       <el-form-item>
@@ -20,24 +20,24 @@
 
 <script>
 export default {
-  name: "Email",
+  name: 'Email',
   data() {
-    //校验方法
+    // 校验方法
     var checkEmail = (rule, value, callback) => {
-      let check =
-        /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/;
+      const check =
+        /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/
       if (check.test(this.ruleForm.email)) {
         // this.$message.success("email ok");
-        callback();
+        callback()
       } else {
-         callback(new Error("email no"));
+        callback(new Error('email no'))
         // this.$message.error("email no");
       }
-    };
+    }
 
     return {
       ruleForm: {
-        email: "",
+        email: ''
       },
 
       rules: {
@@ -45,29 +45,29 @@ export default {
           {
             required: true,
             validator: checkEmail,
-            trigger: "blur",
-          },
-        ],
-      },
-    };
+            trigger: 'blur'
+          }
+        ]
+      }
+    }
   },
   methods: {
     reForm(ruleForm) {
       this.$refs[ruleForm].validate((valid) => {
         if (valid) {
-            this.$store.dispatch('user/email',this.ruleForm).then(()=>{
-                this.$message.success("email-send-----ok")
-                this.$router.push('/login')
-            }).catch(()=>{
-                console.log("email-send-----fail")
-            })
+          this.$store.dispatch('user/email', this.ruleForm).then(() => {
+            this.$message.success('email-send-----ok')
+            this.$router.push('/login')
+          }).catch(() => {
+            console.log('email-send-----fail')
+          })
         } else {
-          this.$message.error("error");
+          this.$message.error('error')
         }
-      });
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

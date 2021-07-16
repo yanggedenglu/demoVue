@@ -6,7 +6,7 @@
         <input ref="file" type="file" name="file" webkitdirectory @change.stop="selectFiles">
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submit">提交</el-button>
+        <el-button type="primary" size="mini" @click="submit">提交</el-button>
       </el-form-item>
     </el-form>
   </div>
