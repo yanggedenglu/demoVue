@@ -14,6 +14,7 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+import uploader from 'vue-simple-uploader'
 
 /**
  * If you don't want to use mock-server
@@ -27,6 +28,8 @@ if (process.env.NODE_ENV === 'production') {
   const { mockXHR } = require('../mock')
   mockXHR()
 }
+
+Vue.use(uploader)
 
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
