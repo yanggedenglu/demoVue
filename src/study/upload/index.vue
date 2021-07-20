@@ -92,6 +92,10 @@ export default {
       this.$nextTick(() => {
         this.file_total = this.$refs['uploader'].files.length
       })
+
+      // console.log(this.$refs['uploader'])
+      // this.$refs['uploader'].files = {}
+      // console.log(this.$refs['uploader'])
     },
     // 取消上传
     cancelUpload() {
