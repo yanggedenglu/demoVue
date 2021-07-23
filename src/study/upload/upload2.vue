@@ -1,27 +1,69 @@
 <template>
-  <div>
-    <el-upload
-      :auto-upload="false"
-      :file-list="fileList"
-      :on-change="fileChangeHandle"
-      :on-remove="fileRemoveHandle"
-      :on-exceed="fileExceed"
-      :limit="limit"
-      class="upload-demo"
-      accept=".jpg,.png,.jpeg"
-      drag
-      action=""
-      multiple
-      style="width:360px; margin-left:25px"
-    >
-      <i class="el-icon-upload" />
-      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-      <div class="el-upload__tip">只能上传.png，.jpg，.jpeg文件</div>
-    </el-upload>
-  </div>
+  <el-dialog v-dialogDrag :close-on-click-modal="false" :visible.sync="visible" title="壁纸导入" width="600px" @close="onClose">
+    <div v-loading="loading">
+      <div style="text-align: center;">
+        <div style="margin-bottom: 20px">
+          <el-form ref="form" :model="form" :rules="rules" label-width="150px">
+            <el-form-item label="分类" prop="classificationId">
+              <el-select
+                v-model="form.classificationId"
+                no-data-text="无分类数据，请添加分类"
+                placeholder="请选择"
+                style="width:360px"
+                @visible-change="checkClass"
+              >
+                <el-option v-for="item in classList" :key="item.id" :label="item.name" :value="item.id" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="预计上架时间" prop="publishTime">
+              <el-date-picker
+                v-model="form.publishTime"
+                :picker-options="beforeDate"
+                format="yyyy-MM-dd HH:mm"
+                value-format="timestamp"
+                type="datetime"
+                placeholder="选择日期时间"
+                style="width:360px"
+              />
+            </el-form-item>
+            <el-form-item label="上传壁纸" class="displayFile">
+              <!-- auto-upload是否选取后自动上传  file-list上传的参数列表  accept接受上传的参数
+              on-change	文件状态改变时的钩子，添加文件、上传成功和上传失败时都会被调用 -->
+              <el-upload
+                :auto-upload="false"
+                :file-list="fileList"
+                :on-change="fileChangeHandle"
+                :on-remove="fileRemoveHandle"
+                :on-exceed="fileExceed"
+                :limit="limit"
+                class="upload-demo"
+                accept=".jpg,.png,.jpeg"
+                drag
+                action=""
+                multiple
+                style="width:360px; margin-left:25px"
+              >
+                <i class="el-icon-upload" />
+                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                <div class="el-upload__tip">只能上传.png，.jpg，.jpeg文件</div>
+              </el-upload>
+              <span v-if="fileList.length > 0">已选择{{ fileList.length }}张壁纸，待上传...
+                <el-button size="mini" @click="clearList">清空所选</el-button>
+              </span>
+            </el-form-item>
+          </el-form>
+        </div>
+      </div>
+    </div>
+    <span slot="footer" class="dialog-footer">
+      <el-button :disabled="loading" @click="visible = false">{{ $t('global.cancel') }}</el-button>
+      <el-button :disabled="loading" type="primary" @click="dataFormSubmit()">{{ $t('global.confirm') }}</el-button>
+    </span>
+  </el-dialog>
 </template>
 
 <script>
+import WallPaperApi from '@/api/theme/wallpaper'
 export default {
   data() {
     return {
@@ -46,7 +88,12 @@ export default {
     }
   },
   methods: {
-    // 新增壁纸  暂不使用
+    init(data) {
+      this.visible = true
+      this.classList = data
+    },
+    // 新增壁纸
+    // async + await
     dataFormSubmit() {
       this.$refs['form'].validate((valid) => {
         if (valid) {
@@ -68,12 +115,12 @@ export default {
 
             const pm = new Promise((res, rej) => {
               // 请求上传图片
-              // WallPaperApi.insert(data).then((result) => {
-              //   res({ result: result.result, name: item.name })
-              // }).catch(err => {
-              //   console.log(err)
-              //   res({ result: false, name: item.name })
-              // })
+              WallPaperApi.insert(data).then((result) => {
+                res({ result: result.result, name: item.name })
+              }).catch(err => {
+                console.log(err)
+                res({ result: false, name: item.name })
+              })
             })
             promiseList.push(pm)
           })
@@ -118,13 +165,26 @@ export default {
     onClose() {
       this.fileList = []
       this.$refs['form'].resetFields()
-      this.file_total = 0
-      this.$refs.uploader.uploader.cancel()
+    },
+    // 清空所选壁纸
+    clearList() {
+      this.fileList = []
+    },
+    checkClass(flag) {
+      if (flag && this.classList.length === 0) {
+        this.$message.error('无分类数据，请添加分类')
+      }
     }
   }
 }
 </script>
 
 <style>
-
+.el-upload__tip{
+  padding: 0px;
+  line-height: 15px;
+}
+.el-upload-list__item-name{
+  display: none;
+}
 </style>
