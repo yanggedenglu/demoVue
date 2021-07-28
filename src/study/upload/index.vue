@@ -9,7 +9,10 @@
         <el-button type="primary" size="mini" @click="submit">提交</el-button>
       </el-form-item>
     </el-form>
-    <!--  -->
+    <br>
+    <br>
+    <br>
+    <!-- 2.vue-simple-uploader -->
     <uploader
       ref="uploader"
       :options="options"
@@ -26,7 +29,6 @@
     </uploader>
     <div slot="footer" class="dialog-footer">
       <span class="filetotal">共计: {{ file_total }}</span>
-      <!-- <el-button v-show="controllerErrorFileDialog" type="danger" plain @click="errorDialog=true">错误信息</el-button> -->
       <el-button @click="cancelUpload">取消上传</el-button>
       <el-button type="primary" @click="submitUpload">开始上传</el-button>
     </div>
@@ -40,9 +42,11 @@ export default {
   name: 'Upload',
   data() {
     return {
+      // el-upload
       form: {
         fileList: []
       },
+      // vue-simple-uploader
       options: {
         target: 'http://localhost:8000/upload2', // 上传URL
         testChunks: false, // 是否开启服务器分片校验
@@ -55,6 +59,11 @@ export default {
         accept: ['.png', '.jpg', '.jpeg']
       },
       file_total: 0 // 本次文件上传的总数
+    }
+  },
+  computed: {
+    computeds: function() {
+      return 1 + 4
     }
   },
   methods: {
@@ -84,7 +93,8 @@ export default {
     },
     // 添加文件到列表还未上传,每添加一个文件，就会调用一次,在这里过滤并收集文件夹中文件格式不正确信息
     onFileAdded(file) {
-      const file_type = file.name.substring(file.name.lastIndexOf('.') + 1)
+      console.log(file)
+      const file_type = file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase()
       const extension = (file_type === 'png' || file_type === 'jpg' || file_type === 'jpeg')
       if (!extension) { // 不符合格式不加入
         file.ignored = true
@@ -92,10 +102,6 @@ export default {
       this.$nextTick(() => {
         this.file_total = this.$refs['uploader'].files.length
       })
-
-      // console.log(this.$refs['uploader'])
-      // this.$refs['uploader'].files = {}
-      // console.log(this.$refs['uploader'])
     },
     // 取消上传
     cancelUpload() {

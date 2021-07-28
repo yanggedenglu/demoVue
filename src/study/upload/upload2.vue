@@ -179,7 +179,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .el-upload__tip{
   padding: 0px;
   line-height: 15px;

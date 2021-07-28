@@ -93,6 +93,12 @@ export const constantRoutes = [
         name: 'test2',
         component: () => import('@/views/test2/index'),
         meta: { title: 'layout布局', icon: 'layout' }
+      },
+      {
+        path: 'radio',
+        name: 'radio',
+        component: () => import('@/views/radio/index'),
+        meta: { title: 'radio', icon: 'table' }
       }
     ]
   },
@@ -114,6 +120,18 @@ export const constantRoutes = [
         name: 'upload',
         component: () => import('@/study/upload/index'),
         meta: { title: 'upload', icon: 'form' }
+      },
+      {
+        path: 'transition',
+        name: 'transition',
+        component: () => import('@/study/transition/index'),
+        meta: { title: 'transition', icon: 'form' }
+      },
+      {
+        path: 'upload-define',
+        name: 'upload-define',
+        component: () => import('@/study/upload/upload-define'),
+        meta: { title: 'upload-define' }
       }
     ]
   },

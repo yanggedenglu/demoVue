@@ -26,6 +26,20 @@
       <component :is="currentComponent" />
     </keep-alive>
     <input ref="file" type="file" webkitdirectory @change.stop="selectFile">
+
+    <!-- dialog -->
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="40%"
+    >
+      <upload-define ref="child" />
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="getFileList">确 定</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -33,26 +47,38 @@
 import testslot from '../slot/slot.vue'
 import first from '../component/first.vue'
 import second from '../component/second.vue'
+import uploadDefine from '../upload/upload-define.vue'
 
 export default {
   components: {
     testslot,
     first: first,
-    second: second
+    second: second,
+    uploadDefine
   },
   data() {
     return {
       currentComponent: 'first',
-      fileList: []
+      fileList: [],
+      dialogVisible: false,
+      list: []
     }
   },
   methods: {
     // 选择当前组件
     change(value) {
+      this.dialogVisible = true
       this.currentComponent = value
     },
     selectFile() {
       console.log(this.$refs.file.files)
+    },
+    // 获取子组件数据
+    getFileList() {
+      console.log('father')
+      this.list = this.$refs.child.getFileList()
+      console.log(this.list)
+      this.$refs.child.show()
     }
   }
 }
