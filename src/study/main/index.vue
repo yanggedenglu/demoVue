@@ -30,7 +30,7 @@
     <el-button type="danger" @click="dialogUpload = true">上传+进度条</el-button>
     <!-- dialog -->
     <el-dialog
-      title="提示"
+      title="提示 "
       :visible.sync="dialogVisible"
       width="40%"
     >
@@ -48,7 +48,7 @@
       :visible.sync="dialogUpload"
       width="40%"
     >
-      <upload-and-progress ref="and" :per="list.length" @fileChange="fileChangeHandle" />
+      <upload-and-progress ref="and" :per="list.length" @fileChange="fileChange" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogUpload = false">取 消</el-button>
         <el-button type="primary" @click="uploadAndProgress">确 定</el-button>
@@ -138,8 +138,6 @@ export default {
     },
     // upload-and-progress
     uploadAndProgress() {
-      // 获取子组件文件列表
-      this.list = this.$refs.and.getFileList()
       if (this.list.length === 0) {
         this.$message.error('选择图片')
         return
@@ -149,7 +147,7 @@ export default {
       // 循环上传
       this.list.forEach(item => {
         const form = new FormData()
-        form.append('file', item)
+        form.append('file', item.file)
         const pm = new Promise((res, rej) => {
           upload(form).then(result => {
             res({ result: result })
@@ -169,10 +167,16 @@ export default {
         }, 1000)
       })
     },
+    // upload-and-progress清空所选
     uploadAndProgressClear() {
       this.list = []
       this.dialogUpload = false
       this.$refs.and.clearFileList()
+    },
+    // upload-and-progress上传文件回调
+    fileChange(list) {
+      this.list = list
+      console.log(this.list)
     }
   }
 }

@@ -8,7 +8,7 @@
       @file-added="onFileAdded"
     >
       <el-upload-dragger>
-        <uploader-drop style="width:360px; height: 180px; border:0; background-color: transparent ">
+        <uploader-drop style="width:360px; height: 180px; border:0; background-color:transparent; cursor:default;">
           <i class="el-icon-upload" />
           <div class="el-upload__text">将文件拖到此处，或点击<br>
             <uploader-btn :attrs="{accept: ['.png', '.jpg', '.jpeg']}">上传文件</uploader-btn>
@@ -21,7 +21,7 @@
         <el-button size="mini" @click="clearFileList">清空所选</el-button>
       </span>
     </uploader>
-    <el-progress v-if="count" :percentage="percent" :status="status" />
+    <el-progress v-if="count" :percentage="percent" :status="status" style="width:360px; margin-left:20px;" />
   </div>
 </template>
 
@@ -44,7 +44,7 @@ export default {
     }
   },
   methods: {
-    // 选择上传文件
+    //  选择上传文件
     onFileAdded(file) {
       const file_type = file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase()
       const extension = (file_type === 'png' || file_type === 'jpg' || file_type === 'jpeg')
@@ -57,7 +57,8 @@ export default {
       this.$nextTick(() => {
         this.file_total = this.$refs.uploader.files.length
       })
-      this.$emit('fileChange', file)
+      // 组件中回调返回数据，不直接去访问获取组件中的数据
+      this.$emit('fileChange', this.$refs.uploader.uploader.files)
     },
     // 父组件调用获得上传文件
     getFileList() {
