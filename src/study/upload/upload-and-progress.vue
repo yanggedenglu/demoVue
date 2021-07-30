@@ -1,10 +1,4 @@
 <template>
-  <!--
-    vue-simple-uploader文档
-    https://github.com/simple-uploader/vue-uploader/blob/master/README_zh-CN.md
-    simple-uploader.js文档
-    https://github.com/simple-uploader/Uploader/blob/develop/README_zh-CN.md
-  -->
   <div>
     <uploader
       ref="uploader"
@@ -25,26 +19,9 @@
       <uploader-unsupport />
       <span v-if="file_total > 0">已选择{{ file_total }}张壁纸，待上传...
         <el-button size="mini" @click="clearFileList">清空所选</el-button>
-        <!-- <el-button size="mini" @click="dialogVisible = true">所选列表</el-button> -->
       </span>
-
-      <!-- dialog -->
-      <el-dialog append-to-body title="文件列表" :visible.sync="dialogVisible" width="30%">
-        <!-- uploader-list -->
-        <uploader-list>
-          <div slot-scope="props" class="file-panel">
-            <el-scrollbar style="height:100%">
-              <ul>
-                <li v-for="file in props.fileList" :key="file.id">
-                  <uploader-file :file="file" :list="true" />
-                </li>
-              </ul>
-            </el-scrollbar>
-          </div>
-        </uploader-list>
-      </el-dialog>
-
     </uploader>
+    <el-progress v-if="count" :percentage="percent" :status="status" />
   </div>
 </template>
 
@@ -54,14 +31,20 @@ export default {
   components: {
     ElUploadDragger
   },
+  props: {
+    per: { type: Number, default() { return {} } }
+  },
   data() {
     return {
       fileList: [],
       file_total: 0,
-      dialogVisible: false
+      percent: 0,
+      count: 0,
+      status: null
     }
   },
   methods: {
+    // 选择上传文件
     onFileAdded(file) {
       const file_type = file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase()
       const extension = (file_type === 'png' || file_type === 'jpg' || file_type === 'jpeg')
@@ -74,6 +57,7 @@ export default {
       this.$nextTick(() => {
         this.file_total = this.$refs.uploader.files.length
       })
+      this.$emit('fileChange', file)
     },
     // 父组件调用获得上传文件
     getFileList() {
@@ -83,14 +67,32 @@ export default {
     clearFileList() {
       this.fileList = []
       this.file_total = 0
+      this.percent = 0
+      this.count = 0
+      this.status = null
       this.$refs.uploader.uploader.cancel()
-      // this.$refs.uploader.files = []
+    },
+    // 进度条特效
+    getData(data) {
+      this.count++
+      this.percent += Math.round((1 / this.per) * 100)
+      if (data === false) {
+        if (this.count === this.per) {
+          this.percent = 100
+          this.status = 'exception'
+        }
+      } else {
+        if (this.count === this.per) {
+          this.percent = 100
+          this.status = 'success'
+        }
+      }
     }
   }
 }
 </script>
 
-<style scoped lang="scss">
+<style>
 .uploader .uploader-btn{
   font-size: 14px;
   font-style: normal;
@@ -99,33 +101,4 @@ export default {
   color: #409EFF;
   border: 0px;
 }
-
-.file-panel ul{
-  list-style: none;
-  padding-left: 20px;
-}
-.file-panel ::v-deep .uploader-file-status {
-  display: none;
-}
-.file-panel ::v-deep .uploader-file-actions {
-  display: none;
-}
-.file-panel ::v-deep .uploader-file-icon {
-  // display: none;
-}
-.file-panel ::v-deep .uploader-file-icon[icon="image"]::before {
-  content: url("../../static/images/view.svg");
-  width: 24px;
-  height: 24px;
-}
-.file-panel ::v-deep .uploader-file-meta {
-  display: none;
-}
-.file-panel ::v-deep .uploader-file-size {
-  width: 20%;
-}
-.file-panel ::v-deep .uploader-file-info {
-  text-align: left;
-}
-
 </style>

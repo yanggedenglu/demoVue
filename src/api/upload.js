@@ -10,3 +10,14 @@ export function upload(data) {
     }
   })
 }
+
+export function upload2(data) {
+  return request({
+    url: 'http://localhost:8000/upload2',
+    method: 'post',
+    data,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}

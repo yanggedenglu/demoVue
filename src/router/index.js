@@ -132,6 +132,12 @@ export const constantRoutes = [
         name: 'upload-define',
         component: () => import('@/study/upload/upload-define'),
         meta: { title: 'upload-define' }
+      },
+      {
+        path: 'upload-progress',
+        name: 'upload-progress',
+        component: () => import('@/study/upload/upload-progress'),
+        meta: { title: 'upload-progress' }
       }
     ]
   },
