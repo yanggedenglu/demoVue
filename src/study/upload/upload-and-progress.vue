@@ -2,6 +2,7 @@
   <div>
     <uploader
       ref="uploader"
+      v-loading="loading"
       :options="{}"
       :auto-start="false"
       style="display: inline-block; text-align: center; cursor: pointer; outline: 0;"
@@ -17,7 +18,7 @@
         </uploader-drop>
       </el-upload-dragger>
       <uploader-unsupport />
-      <span v-if="file_total > 0">已选择{{ file_total }}张壁纸，待上传...
+      <span v-if="per > 0">已选择{{ per }}张壁纸，待上传...
         <el-button size="mini" @click="clearFileList">清空所选</el-button>
       </span>
     </uploader>
@@ -36,29 +37,26 @@ export default {
   },
   data() {
     return {
+      loading: false,
       fileList: [],
-      file_total: 0,
       percent: 0,
       count: 0,
-      status: null
+      status: null,
+      uploadResult: true
     }
   },
   methods: {
-    //  选择上传文件
+    // 选择上传文件
     onFileAdded(file) {
       const file_type = file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase()
       const extension = (file_type === 'png' || file_type === 'jpg' || file_type === 'jpeg')
       if (extension) {
-        this.fileList.push(file.file)
+        // 组件中回调返回数据，不直接去访问获取组件中的数据
+        this.$emit('fileChange', file)
       } else {
         // 不符合格式不加入
         file.ignored = true
       }
-      this.$nextTick(() => {
-        this.file_total = this.$refs.uploader.files.length
-      })
-      // 组件中回调返回数据，不直接去访问获取组件中的数据
-      this.$emit('fileChange', this.$refs.uploader.uploader.files)
     },
     // 父组件调用获得上传文件
     getFileList() {
@@ -67,27 +65,31 @@ export default {
     // 清空所选
     clearFileList() {
       this.fileList = []
-      this.file_total = 0
       this.percent = 0
       this.count = 0
       this.status = null
       this.$refs.uploader.uploader.cancel()
+      this.$emit('clearChange')
     },
     // 进度条特效
     getData(data) {
       this.count++
       this.percent += Math.round((1 / this.per) * 100)
-      if (data === false) {
-        if (this.count === this.per) {
-          this.percent = 100
+      if (!data) {
+        this.uploadResult = false
+      }
+      if (this.count === this.per) {
+        this.percent = 100
+        if (this.uploadResult) {
+          this.status = 'success'
+        } else {
           this.status = 'exception'
         }
-      } else {
-        if (this.count === this.per) {
-          this.percent = 100
-          this.status = 'success'
-        }
       }
+    },
+    // 上传特效
+    getUpload() {
+      this.loading = true
     }
   }
 }
