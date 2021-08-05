@@ -43,7 +43,7 @@ const actions = {
           // SET_TOKEN
           commit('SET_TOKEN', data.id)
 
-          // 
+          //
           setToken(data.id)
           // 插入到测试cookie中
           setCookie(data.token)
@@ -81,7 +81,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       logout(state.token).then(() => {
         // must remove  token  first 清楚cookie
-        removeToken() 
+        removeToken()
         removeCookie()
         resetRouter()
         commit('RESET_STATE')
@@ -106,7 +106,6 @@ const actions = {
   // store register
   register({ commit }, ruleForm) {
     // console.log("============================ store register")
-    // console.log(ruleForm)
     const { username, password, email, code, sessionId } = ruleForm
     return new Promise((resolve, reject) => {
       register({ username: username, password: password, email: email, code: code, sessionId: sessionId }).then(response => {

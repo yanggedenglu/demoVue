@@ -36,7 +36,7 @@
       width="40%"
       @close="clearList"
     >
-      <upload-and-progress ref="and" :per="list.length" @fileChange="fileChange" @clearChange="clearChange" />
+      <upload-and-progress ref="and" :loading="loading" :per="list.length" @fileChange="fileChange" @clearChange="clearChange" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogUpload = false">取 消</el-button>
         <el-button type="primary" @click="uploadAndProgress">确 定</el-button>
@@ -51,7 +51,7 @@ import first from '../component/first.vue'
 import second from '../component/second.vue'
 
 import uploadProgress from '../upload/upload-progress.vue'
-import { upload } from '@/api/upload'
+import { upload2 } from '@/api/upload'
 import uploadAndProgress from '../upload/upload-and-progress.vue'
 export default {
   components: {
@@ -66,7 +66,8 @@ export default {
       currentComponent: 'first',
       fileList: [],
       list: [],
-      dialogUpload: false
+      dialogUpload: false,
+      loading: false
     }
   },
   methods: {
@@ -81,19 +82,21 @@ export default {
       this.list = []
       this.$refs.and.clearFileList()
     },
-    // upload-and-progress
+    // upload-and-progress方法
     uploadAndProgress() {
       if (this.list.length === 0) {
         this.$message.error('选择图片')
         return
       }
+
+      this.loading = true
       const promiseList = []
       // 循环上传
       this.list.forEach(item => {
         const form = new FormData()
         form.append('file', item.file)
         const pm = new Promise((res, rej) => {
-          upload(form).then(result => {
+          upload2(form).then(result => {
             res({ result: result })
             this.$refs.and.getData(true)
           }).catch(() => {
@@ -105,10 +108,10 @@ export default {
       })
       // 校验Promise结果
       Promise.all(promiseList).then(res => {
-        console.log('promise')
         setTimeout(() => {
           this.list = []
           this.dialogUpload = false
+          this.loading = false
         }, 1000)
       })
     },

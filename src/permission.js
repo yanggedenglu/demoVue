@@ -13,7 +13,7 @@ const whiteList = ['/login', '/register', '/email'] // no redirect whitelist
 
 // 全局钩子-----路由前调用
 router.beforeEach(async(to, from, next) => {
-  console.log(to.path)
+  // console.log(to.path)
 
   // start progress bar
   NProgress.start()
@@ -36,7 +36,6 @@ router.beforeEach(async(to, from, next) => {
       } else {
         try {
           // get user info
-          console.log('hasgetUserInfo------' + hasGetUserInfo)
           await store.dispatch('user/getInfo')
 
           next()

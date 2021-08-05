@@ -33,11 +33,11 @@ export default {
     ElUploadDragger
   },
   props: {
-    per: { type: Number, default() { return {} } }
+    per: { type: Number, default() { return {} } },
+    loading: { type: Boolean, defult() { return } }
   },
   data() {
     return {
-      loading: false,
       fileList: [],
       percent: 0,
       count: 0,
@@ -86,10 +86,6 @@ export default {
           this.status = 'exception'
         }
       }
-    },
-    // 上传特效
-    getUpload() {
-      this.loading = true
     }
   }
 }

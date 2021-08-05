@@ -132,6 +132,12 @@ export const constantRoutes = [
         name: 'upload-progress',
         component: () => import('@/study/upload/upload-progress'),
         meta: { title: 'upload-progress' }
+      },
+      {
+        path: 'select',
+        name: 'select',
+        component: () => import('@/study/select/index'),
+        meta: { title: 'select' }
       }
     ]
   },
