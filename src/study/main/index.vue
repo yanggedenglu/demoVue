@@ -29,6 +29,7 @@
 
     <hr>
     <el-button type="danger" @click="dialogUpload = true">上传+进度条</el-button>
+    <el-button type="danger" @click="timer">timer</el-button>
     <!-- dialog -->
     <el-dialog
       title="提示"
@@ -36,7 +37,14 @@
       width="40%"
       @close="clearList"
     >
-      <upload-and-progress ref="and" :loading="loading" :per="list.length" @fileChange="fileChange" @clearChange="clearChange" />
+      <upload-and-progress
+        ref="and"
+        :loading="loading"
+        :directory="false"
+        :per="list.length"
+        @fileChange="fileChange"
+        @clearChange="clearChange"
+      />
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogUpload = false">取 消</el-button>
         <el-button type="primary" @click="uploadAndProgress">确 定</el-button>
@@ -122,6 +130,24 @@ export default {
     // 清空文件
     clearChange() {
       this.list = []
+    },
+    // time
+    timer() {
+      var myDate = new Date()// 获取的是本机时间
+      console.log(myDate.getYear())
+      // 在浏览器内 getYear 返回的是 "当前年份-1900" 的值，IE则是直接将1900加上了，返回的 2017。
+      console.log('获取完整的年份(4位)---' + myDate.getFullYear()) // 可正确获取年份
+      console.log('获取当前月份(0-11)---' + myDate.getMonth()) // 0代表1月
+      console.log('获取当前日(1-31)---' + myDate.getDate())
+      console.log('获取当前星期X(0-6---' + myDate.getDay()) // 0代表星期天
+      console.log('获取当前时间(从1970.1.1开始的毫秒数)---' + myDate.getTime())
+      console.log('获取当前小时数(0-23)---' + myDate.getHours())
+      console.log('获取当前分钟数(0-59)---' + myDate.getMinutes())
+      console.log('获取当前秒数(0-59)---' + myDate.getSeconds())
+      console.log('获取当前毫秒数(0-999)---' + myDate.getMilliseconds())
+      console.log('获取当前日期---' + myDate.toLocaleDateString())
+      console.log('获取当前时间---' + myDate.toLocaleTimeString())
+      console.log('获取日期与时间---' + myDate.toLocaleString())
     }
   }
 }

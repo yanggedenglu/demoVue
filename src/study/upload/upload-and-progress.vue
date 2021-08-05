@@ -1,4 +1,7 @@
 <template>
+  <!-- vue-simple-uploader上传组件  -->
+  <!-- https://github.com/simple-uploader/vue-uploader/blob/master/README_zh-CN.md  vue-simple-uploader文档 -->
+  <!-- https://github.com/simple-uploader/Uploader/blob/develop/README_zh-CN.md  simple-uploader.js文档 -->
   <div>
     <uploader
       ref="uploader"
@@ -12,8 +15,8 @@
         <uploader-drop style="width:360px; height: 180px; border:0; background-color:transparent; cursor:default;">
           <i class="el-icon-upload" />
           <div class="el-upload__text">将文件拖到此处，或点击<br>
-            <uploader-btn :attrs="{accept: ['.png', '.jpg', '.jpeg']}">上传文件</uploader-btn>
-            <uploader-btn :directory="true">上传文件夹</uploader-btn>
+            <uploader-btn :attrs="attrs">上传文件</uploader-btn>
+            <uploader-btn v-if="directory" :directory="true">上传文件夹</uploader-btn>
           </div>
         </uploader-drop>
       </el-upload-dragger>
@@ -22,6 +25,7 @@
         <el-button size="mini" @click="clearFileList">清空所选</el-button>
       </span>
     </uploader>
+    <!-- 进度条特效 -->
     <el-progress v-if="count" :percentage="percent" :status="status" style="width:360px; margin-left:20px;" />
   </div>
 </template>
@@ -34,7 +38,8 @@ export default {
   },
   props: {
     per: { type: Number, default() { return {} } },
-    loading: { type: Boolean, defult() { return } }
+    loading: { type: Boolean, defult() { return } },
+    directory: { type: Boolean, default() { return } }
   },
   data() {
     return {
@@ -42,14 +47,25 @@ export default {
       percent: 0,
       count: 0,
       status: null,
-      uploadResult: true
+      uploadResult: true,
+      /**
+        image: ['gif', 'jpg', 'jpeg', 'png', 'bmp', 'webp'],
+        video: ['mp4', 'm3u8', 'rmvb', 'avi', 'swf', '3gp', 'mkv', 'flv'],
+        audio: ['mp3', 'wav', 'wma', 'ogg', 'aac', 'flac'],
+        document: ['doc', 'txt', 'docx', 'pages', 'epub', 'pdf', 'numbers', 'csv', 'xls', 'xlsx', 'keynote', 'ppt', 'pptx']包括上面三个分类
+       */
+      attrs: {
+        accept: 'image/*'
+      }
     }
   },
   methods: {
     // 选择上传文件
     onFileAdded(file) {
-      const file_type = file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase()
-      const extension = (file_type === 'png' || file_type === 'jpg' || file_type === 'jpeg')
+      console.log(file)
+      // const file_type = file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase()
+      // const extension = (file_type === 'png' || file_type === 'jpg' || file_type === 'jpeg')
+      const extension = true
       if (extension) {
         // 组件中回调返回数据，不直接去访问获取组件中的数据
         this.$emit('fileChange', file)
