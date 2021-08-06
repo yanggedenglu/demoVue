@@ -47,7 +47,7 @@
       />
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogUpload = false">取 消</el-button>
-        <el-button type="primary" @click="uploadAndProgress">确 定</el-button>
+        <el-button v-point="loading" type="primary" @click="uploadAndProgress">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -59,7 +59,7 @@ import first from '../component/first.vue'
 import second from '../component/second.vue'
 
 import uploadProgress from '../upload/upload-progress.vue'
-import { upload2 } from '@/api/upload'
+import { upload } from '@/api/upload'
 import uploadAndProgress from '../upload/upload-and-progress.vue'
 export default {
   components: {
@@ -69,6 +69,29 @@ export default {
     uploadProgress,
     uploadAndProgress
   },
+  // directives: {
+  //   // 自定义指令
+  //   point: {
+  //     update: function(el, binding, vnode) {
+  //       console.log(el.class)
+  //       // 监听点击事件
+  //       el.addEventListener('click', () => {
+  //         if (!el.disabled) {
+  //           el.disabled = true
+  //           if (binding.value === false) {
+  //             setTimeout(() => {
+  //               el.disabled = false
+  //             }, 2000)
+  //           }
+  //         }
+  //       })
+
+  //       // console.log('el', el)
+  //       // console.log('binding', binding.value)
+  //       // console.log('vnode', vnode)
+  //     }
+  //   }
+  // },
   data() {
     return {
       currentComponent: 'first',
@@ -104,7 +127,7 @@ export default {
         const form = new FormData()
         form.append('file', item.file)
         const pm = new Promise((res, rej) => {
-          upload2(form).then(result => {
+          upload(form).then(result => {
             res({ result: result })
             this.$refs.and.getData(true)
           }).catch(() => {

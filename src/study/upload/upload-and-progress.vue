@@ -63,9 +63,9 @@ export default {
     // 选择上传文件
     onFileAdded(file) {
       console.log(file)
-      // const file_type = file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase()
-      // const extension = (file_type === 'png' || file_type === 'jpg' || file_type === 'jpeg')
-      const extension = true
+      const file_type = file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase()
+      const extension = (file_type === 'png' || file_type === 'jpg' || file_type === 'jpeg')
+      // const extension = true
       if (extension) {
         // 组件中回调返回数据，不直接去访问获取组件中的数据
         this.$emit('fileChange', file)

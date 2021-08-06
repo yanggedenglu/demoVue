@@ -63,6 +63,43 @@
 <script>
 export default {
   data() {
+    // 校验年龄
+    var checkage = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('年龄不为空'))
+      }
+      if (!Number.isInteger(value)) {
+        callback(new Error('请输入数字'))
+      } else {
+        if (value < 18) {
+          callback(new Error('年龄大于18岁'))
+        } else {
+          callback()
+        }
+      }
+    }
+    // 校验密码
+    var checkPass = (rule, value, callback) => {
+      if (value === '') {
+        return callback(new Error('密码不为空'))
+      } else {
+        if (this.ruleForm.checkPass !== '') {
+          this.$refs.ruleForm.validateField('checkPass')
+        }
+        callback()
+      }
+    }
+    // 校验再次输入密码
+    var checkPass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('再次输入密码'))
+      } else if (value !== this.ruleForm.pass) {
+        callback(new Error('两次输入的密码不一致'))
+      } else {
+        callback()
+      }
+    }
+
     return {
       options: [{ value: '选项1', label: '黄金糕' },
         { value: '选项2', label: '双皮奶' },
@@ -77,7 +114,11 @@ export default {
         checkPass: '',
         age: ''
       },
-      rules: []
+      rules: {
+        age: [{ validator: checkage, trigger: 'blur', required: true }],
+        pass: [{ validator: checkPass, trigger: 'blur', required: true }],
+        checkPass: [{ validator: checkPass2, trigger: 'blur', required: true }]
+      }
     }
   },
   methods: {
