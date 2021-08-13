@@ -32,6 +32,8 @@
     <el-button type="danger" @click="timer">timer</el-button>
     <!-- dialog -->
     <el-dialog
+
+      v-close
       title="提示"
       :visible.sync="dialogUpload"
       width="40%"
@@ -40,14 +42,17 @@
       <upload-and-progress
         ref="and"
         :loading="loading"
-        :directory="false"
         :per="list.length"
         @fileChange="fileChange"
         @clearChange="clearChange"
       />
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogUpload = false">取 消</el-button>
-        <el-button v-point="loading" type="primary" @click="uploadAndProgress">确 定</el-button>
+        <el-button
+          v-point
+          type="primary"
+          @click="uploadAndProgress"
+        >确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -69,29 +74,26 @@ export default {
     uploadProgress,
     uploadAndProgress
   },
-  // directives: {
-  //   // 自定义指令
-  //   point: {
-  //     update: function(el, binding, vnode) {
-  //       console.log(el.class)
-  //       // 监听点击事件
-  //       el.addEventListener('click', () => {
-  //         if (!el.disabled) {
-  //           el.disabled = true
-  //           if (binding.value === false) {
-  //             setTimeout(() => {
-  //               el.disabled = false
-  //             }, 2000)
-  //           }
-  //         }
-  //       })
+  directives: {
+    // 自定义指令
+    point: {
+      update: function(el, binding, vnode) {
+        // 监听点击事件
+        el.addEventListener('click', () => {
+          if (!el.disabled) {
+            el.disabled = true
+            setTimeout(() => {
+              el.disabled = false
+            }, 30000)
+          }
+        })
 
-  //       // console.log('el', el)
-  //       // console.log('binding', binding.value)
-  //       // console.log('vnode', vnode)
-  //     }
-  //   }
-  // },
+        // console.log('el', el)
+        // console.log('binding', binding.value)
+        // console.log('vnode', vnode)
+      }
+    }
+  },
   data() {
     return {
       currentComponent: 'first',

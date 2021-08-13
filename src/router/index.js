@@ -138,6 +138,12 @@ export const constantRoutes = [
         name: 'select',
         component: () => import('@/study/select/index'),
         meta: { title: 'select' }
+      },
+      {
+        path: 'zip',
+        name: 'zip',
+        component: () => import('@/study/zip/index'),
+        meta: { title: 'zip' }
       }
     ]
   },
