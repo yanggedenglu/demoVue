@@ -1,10 +1,12 @@
 <template>
   <div class="hello">
     <img id="imgs" src="../../../static/img/12-oppo_default_wallpaper.jpg">
+    <img id="image1" src="../../../static/img/image1.jpg">
     <p><br></p>
-    <el-button type="success" @click="getClick">成功按钮</el-button>
+    <el-button type="success" @click="drawPicture">成功按钮</el-button>
     <canvas id="canvas" width="500" height="1000" style="border: solid 1px #000" />
     <canvas id="agacanvas" width="500" height="1000" style="border: solid 1px #000" />
+    <canvas id="three" width="500" height="1000" style="border: solid 1px #000" />
   </div>
 </template>
 
@@ -16,57 +18,59 @@ export default {
     }
   },
   methods: {
-    // 保存 先模糊，填充
-    getClick() {
-      console.log('click')
+    drawPicture() {
       var canvas = document.getElementById('canvas')
       var ctx = canvas.getContext('2d')
       var imgs = document.getElementById('imgs')
       // 普通画图
-      ctx.drawImage(imgs, 20, 20, 400, 1000)
+      ctx.drawImage(imgs, 0, 0, 400, 1000)
 
-      // 使用stackblur-canvas
-      // const StackBlur = require('stackblur-canvas')
-      const imageData = ctx.getImageData(20, 500, 300, 200)
-
-      var blurImage = this.getClick2(imageData)
-      console.log(blurImage)
-      blurImage.onload = () => {
-        ctx.drawImage(blurImage, 0, 0)
-      }
-      this.roundRect(ctx, 0, 0)
-      // StackBlur.canvasRGB(canvas, 20, 500, 300, 200, 30)
-      // 画部分图 设置背景色 透明度
-      // ctx.fillStyle = '#D2D2D2'
-      // ctx.globalAlpha = 0.3
-      // this.roundRect(blurImage, 0, 500, 300, 200, 30)
-      // ctx.drawImage(blurImage, 20, 20, 400, 1000)
-    },
-    // getImageData  put贴到 新的canvas上  模糊 填充 切圆角  贴回来
-    getClick2(imageData) {
-      var canvas = document.getElementById('agacanvas')
-      var ctx = canvas.getContext('2d')
-      ctx.putImageData(imageData, 0, 0)
-
-      // 使用stackblur-canvas
+      // 第二张画布
+      var agecanvas = document.getElementById('agacanvas')
+      var agectx = agecanvas.getContext('2d')
+      agectx.drawImage(imgs, 0, 0, 400, 1000)
+      // 模糊 + 填充
       const StackBlur = require('stackblur-canvas')
-      StackBlur.canvasRGB(canvas, 0, 0, 300, 200, 30)
-      // 画部分图 设置背景色 透明度
-      ctx.fillStyle = '#D2D2D2'
-      ctx.globalAlpha = 0.3
-      this.drawRoundedRect(ctx, 0, 0, 300, 200, 30, 'fill')
-      this.roundRect(ctx, 0, 0, 300, 200, 30)
-
+      StackBlur.canvasRGBA(agecanvas, 0, 500, 300, 200, 30)
+      agectx.fillStyle = '#D2D2D2'
+      agectx.globalAlpha = 0.3
+      this.drawRoundedRect(agectx, 0, 500, 300, 200, 30, 'fill')
+      // 画布转为图片
       const saveImage = new Image()
       saveImage.crossOrigin = 'Anonymous'
-      saveImage.src = canvas.toDataURL('image/png')
+      saveImage.src = agecanvas.toDataURL('image/png')
 
-      return saveImage
+      // 第一张画布上画对应位置
+      saveImage.onload = () => {
+        this.roundRect(ctx, 0, 500, 300, 200, 30)
+        ctx.drawImage(saveImage, 0, 0)
+        ctx.restore()
+      }
 
-      // ctx.fillRect(100,100,50,50)
-      // StackBlur.canvasRGB(canvas,100,100,50,50, 46);
-      // StackBlur.image(imgs, canvas, 40);
+      // 第三张图标画布
+      var three = document.getElementById('three')
+      var threectx = three.getContext('2d')
+      for (let index = 0; index < 4; index++) {
+        // 裁剪圆角
+        this.roundRect(threectx, 20 + (index * 100), 500, 100, 100, 30)
+        threectx.drawImage(imgs, 20 + (index * 100), 500, 100, 100)
+        threectx.restore()
+      }
+      // 图标画布转图片
+      const icon = new Image()
+      icon.crossOrigin = 'Anonymous'
+      icon.src = three.toDataURL('image/png')
+      // 第一张画布上画对应位置
+      icon.onload = () => {
+        // for (let index = 0; index < 4; index++) {
+        //   this.roundRect(ctx, 20 + (index * 100), 500, 100, 100, 30)
+        //   ctx.drawImage(icon, 0, 0)
+        //   ctx.restore()
+        // }
+        ctx.drawImage(icon, 0, 0)
+      }
     },
+
     // 画椭圆
     drawRoundedRect(ctx, x, y, width, height, radius, type) {
       ctx.get
