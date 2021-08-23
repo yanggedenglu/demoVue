@@ -3,7 +3,7 @@
     <img id="imgs" src="../../../static/img/12-oppo_default_wallpaper.jpg">
     <img id="image1" src="../../../static/img/image1.jpg">
     <p><br></p>
-    <el-button type="success" @click="drawPicture">成功按钮</el-button>
+    <el-button type="success" @click="drawPicture2">成功按钮</el-button>
     <canvas id="canvas" width="500" height="1000" style="border: solid 1px #000" />
     <canvas id="agacanvas" width="500" height="1000" style="border: solid 1px #000" />
     <canvas id="three" width="500" height="1000" style="border: solid 1px #000" />
@@ -70,8 +70,45 @@ export default {
         ctx.drawImage(icon, 0, 0)
       }
     },
+    // 实验 填充过一层的图片裁不了圆角矩形
+    drawPicture2() {
+      var canvas = document.getElementById('canvas')
+      var ctx = canvas.getContext('2d')
+      var imgs = document.getElementById('imgs')
+      // 普通画图
+      ctx.drawImage(imgs, 0, 0, 400, 1000)
 
-    // 画椭圆
+      // 第二张画布
+      var agecanvas = document.getElementById('agacanvas')
+      var agectx = agecanvas.getContext('2d')
+      agectx.drawImage(imgs, 0, 0, 400, 1000)
+      agectx.save()
+      // 模糊 + 填充
+      const StackBlur = require('stackblur-canvas')
+      StackBlur.canvasRGBA(agecanvas, 0, 500, 300, 200, 30)
+      agectx.fillStyle = '#D2D2D2'
+      agectx.globalAlpha = 0.3
+      this.drawRoundedRect(agectx, 0, 500, 300, 200, 30, 'fill')
+      agectx.restore()
+
+      // 画布转为图片
+      const saveImage = new Image()
+      saveImage.crossOrigin = 'Anonymous'
+      saveImage.src = agecanvas.toDataURL('image/png')
+      // 第一张画布上画对应位置
+      saveImage.onload = () => {
+        this.roundRect(ctx, 0, 500, 300, 200, 30)
+        ctx.drawImage(saveImage, 0, 0)
+        ctx.restore()
+      }
+
+      this.roundRect(ctx, 20, 500, 100, 100, 30)
+      // ctx.fillStyle = 'red'
+      // ctx.fillRect(20, 500, 100, 100)
+      // agectx.fill()
+    },
+
+    // 画椭圆 填充底色
     drawRoundedRect(ctx, x, y, width, height, radius, type) {
       ctx.get
       ctx.moveTo(x, y + radius)
@@ -84,6 +121,7 @@ export default {
       const method = type || 'stroke' // 默认描边，传入fill即可填充矩形
       ctx[method]()
     },
+    // dataurl转blob
     dataURLToBlob(dataurl) {
       const arr = dataurl.split(',')
       const mime = arr[0].match(/:(.*?);/)[1]
@@ -97,6 +135,7 @@ export default {
         type: mime
       })
     },
+    // 剪切圆角矩形
     roundRect(ctx, x, y, w, h, r) {
       ctx.save()
       if (w < 2 * r) r = w / 2

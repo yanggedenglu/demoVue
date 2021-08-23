@@ -140,10 +140,10 @@ export const constantRoutes = [
         meta: { title: 'select' }
       },
       {
-        path: 'zip',
-        name: 'zip',
-        component: () => import('@/study/zip/index'),
-        meta: { title: 'zip' }
+        path: 'canvas',
+        name: 'canvas',
+        component: () => import('@/study/canvas/index'),
+        meta: { title: 'canvas' }
       }
     ]
   },
