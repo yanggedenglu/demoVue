@@ -1,60 +1,71 @@
 <template>
   <div id="app">
-    <h2>study</h2>
-    <testslot>
-      <span style="font-size: 20px">萝卜</span>
-      <span slot="first">父组件1</span>
-      <p>匿名</p>
-      <template v-slot:second>
-        <span>父组件2</span>
-      </template>
-      <!-- slotchild 自定义名字 -->
-      <template v-slot:yu="slotchild">
-        <p>{{ slotchild.child.name }}</p>
-      </template>
-      <template v-slot:yuyu="{ childhh }">
-        <p>{{ childhh.hhh }}</p>
-      </template>
-    </testslot>
-    <hr>
-    <hr>
+    <!-- 插槽 -->
+    <div>
+      <h2>插槽</h2>
+      <hr>
+      <testslot>
+        <span style="font-size: 20px">萝卜</span>
+        <span slot="first">父组件1</span>
+        <p>匿名</p>
+        <template v-slot:second>
+          <span>父组件2</span>
+        </template>
+        <!-- slotchild 自定义名字 -->
+        <template v-slot:yu="slotchild">
+          <p>{{ slotchild.child.name }}</p>
+        </template>
+        <template v-slot:yuyu="{ childhh }">
+          <p>{{ childhh.hhh }}</p>
+        </template>
+      </testslot>
+      <hr>
+      <hr>
+    </div>
     <!-- 动态组件 -->
-    <el-button type="primary" @click="change('first')">第一个组件</el-button>
-    <el-button type="danger" @click="change('second')">第二个组件</el-button>
-    <!--  <keep-alive>讲失活的组件缓存起来 -->
-    <keep-alive>
-      <component :is="currentComponent" />
-    </keep-alive>
-    <input ref="file" type="file" webkitdirectory @change.stop="selectFile">
+    <div>
+      <h2>动态组件</h2>
+      <hr>
+      <!-- 动态组件 -->
+      <el-button type="primary" @click="change('first')">第一个组件</el-button>
+      <el-button type="danger" @click="change('second')">第二个组件</el-button>
+      <!--  <keep-alive>讲失活的组件缓存起来 -->
+      <keep-alive>
+        <component :is="currentComponent" />
+      </keep-alive>
+      <hr>
+      <hr>
+    </div>
+    <div>
+      <h2>上传</h2>
+      <hr>
+      <el-button type="danger" @click="dialogUpload = true">上传+进度条</el-button>
+      <el-button type="danger" @click="timer">timer</el-button>
+      <!-- dialog -->
+      <el-dialog
+        title="提示"
+        :visible.sync="dialogUpload"
+        width="40%"
+        @close="clearList"
+      >
+        <upload-and-progress
+          ref="and"
+          :loading="loading"
+          :per="list.length"
+          @fileChange="fileChange"
+          @clearChange="clearChange"
+        />
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogUpload = false">取 消</el-button>
+          <el-button
+            v-point
+            type="primary"
+            @click="uploadAndProgress"
+          >确 定</el-button>
+        </span>
+      </el-dialog>
+    </div>
 
-    <hr>
-    <el-button type="danger" @click="dialogUpload = true">上传+进度条</el-button>
-    <el-button type="danger" @click="timer">timer</el-button>
-    <!-- dialog -->
-    <el-dialog
-
-      v-close
-      title="提示"
-      :visible.sync="dialogUpload"
-      width="40%"
-      @close="clearList"
-    >
-      <upload-and-progress
-        ref="and"
-        :loading="loading"
-        :per="list.length"
-        @fileChange="fileChange"
-        @clearChange="clearChange"
-      />
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogUpload = false">取 消</el-button>
-        <el-button
-          v-point
-          type="primary"
-          @click="uploadAndProgress"
-        >确 定</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
@@ -63,7 +74,6 @@ import testslot from '../slot/slot.vue'
 import first from '../component/first.vue'
 import second from '../component/second.vue'
 
-import uploadProgress from '../upload/upload-progress.vue'
 import { upload } from '@/api/upload'
 import uploadAndProgress from '../upload/upload-and-progress.vue'
 export default {
@@ -71,7 +81,6 @@ export default {
     testslot,
     first: first,
     second: second,
-    uploadProgress,
     uploadAndProgress
   },
   directives: {
@@ -87,10 +96,6 @@ export default {
             }, 30000)
           }
         })
-
-        // console.log('el', el)
-        // console.log('binding', binding.value)
-        // console.log('vnode', vnode)
       }
     }
   },
@@ -104,13 +109,14 @@ export default {
     }
   },
   methods: {
+    // **********************************************  2  ********************************************************
     // 选择当前组件
     change(value) {
       this.currentComponent = value
     },
-    selectFile() {
-      console.log(this.$refs.file.files)
-    },
+    // ***********************************************************************************************************
+    // **********************************************  3  ********************************************************
+    // 关闭对话框
     clearList() {
       this.list = []
       this.$refs.and.clearFileList()
@@ -156,7 +162,8 @@ export default {
     clearChange() {
       this.list = []
     },
-    // time
+    // ***********************************************************************************************************
+    // **********************************************  time  *****************************************************
     timer() {
       var myDate = new Date()// 获取的是本机时间
       console.log(myDate.getYear())
@@ -174,6 +181,7 @@ export default {
       console.log('获取当前时间---' + myDate.toLocaleTimeString())
       console.log('获取日期与时间---' + myDate.toLocaleString())
     }
+    // ***********************************************************************************************************
   }
 }
 </script>

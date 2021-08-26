@@ -9,7 +9,9 @@
 
 <script>
 export default {
-  props: ['titles'],
+  props: {
+    titles: { type: String, default: null }
+  },
   data() {
     return {
       message: 'nihao'

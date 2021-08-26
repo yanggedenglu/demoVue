@@ -26,40 +26,40 @@ export default {
   methods: {
     // 导出数据
     exportData() {
+      const tableInfo = []
       getList({ pageSize: 10, pageCount: 1 }).then(res => {
         this.userList = res.data
-      })
-      const tableInfo = []
-      this.userList.forEach(item => {
-        console.log(item)
-        tableInfo.push({
-          'name': item.username,
-          'id': item.id,
-          'createTime': item.createTime
+        res.data.forEach(item => {
+          console.log(item)
+          tableInfo.push({
+            'name': item.username,
+            'id': item.id,
+            'createTime': item.createTime
+          })
         })
-      })
 
-      // json数据转换为xls文件
-      var data = XLSX.utils.json_to_sheet(tableInfo)
-      const wb = XLSX.utils.book_new()
-      XLSX.utils.book_append_sheet(wb, data, '用户列表')
-      const wbout = XLSX.write(wb, {
-        bookType: 'xlsx',
-        bookSST: true,
-        type: 'array'
-      })
+        // json数据转换为xls文件
+        var data = XLSX.utils.json_to_sheet(tableInfo)
+        const wb = XLSX.utils.book_new()
+        XLSX.utils.book_append_sheet(wb, data, '用户列表')
+        const wbout = XLSX.write(wb, {
+          bookType: 'xlsx',
+          bookSST: true,
+          type: 'array'
+        })
 
-      try {
+        try {
         // 下载xls文件
-        FileSaver.saveAs(
-          new Blob([wbout], { type: 'application/octet-stream' }),
-          `用户列表.xlsx` // 文件名
-        )
-      } catch (e) {
-        if (typeof console !== 'undefined') {
-          this.$message.error('导出数据失败')
+          FileSaver.saveAs(
+            new Blob([wbout], { type: 'application/octet-stream' }),
+            `用户列表.xlsx` // 文件名
+          )
+        } catch (e) {
+          if (typeof console !== 'undefined') {
+            this.$message.error('导出数据失败')
+          }
         }
-      }
+      })
     }
   }
 }

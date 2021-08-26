@@ -7,7 +7,9 @@
 
 <script>
 export default {
-  props: ['buttonw'],
+  props: {
+    buttonw: { type: String, default: null }
+  },
   data() {
     return {
       message: 'dajihao'

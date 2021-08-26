@@ -89,9 +89,9 @@ export const constantRoutes = [
         meta: { title: '组件', icon: 'table' }
       },
       {
-        path: 'test2',
-        name: 'test2',
-        component: () => import('@/views/test2/index'),
+        path: 'layout',
+        name: 'layout',
+        component: () => import('@/views/layout/index'),
         meta: { title: 'layout布局', icon: 'layout' }
       },
       {
@@ -126,12 +126,6 @@ export const constantRoutes = [
         name: 'transition',
         component: () => import('@/study/transition/index'),
         meta: { title: 'transition', icon: 'form' }
-      },
-      {
-        path: 'upload-progress',
-        name: 'upload-progress',
-        component: () => import('@/study/upload/upload-progress'),
-        meta: { title: 'upload-progress' }
       },
       {
         path: 'select',

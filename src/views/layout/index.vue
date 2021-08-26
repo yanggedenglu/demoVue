@@ -14,40 +14,15 @@
     </el-row>
     <el-row :gutter="12">
       <el-col :span="6"><div class="bg-purple" /></el-col>
-      <!-- 父子组件间props  -->
-      <el-col :span="6">{{ layout }}</el-col>
-      <el-col :span="6">{{ likes }}</el-col>
-      <!-- 父组件传值给子组件 -->
-      <!-- <el-col :span="6">{{ published }},{{ comment[0] }},{{ author.name }}</el-col> -->
-    </el-row>
-    <!-- v-solt 插槽 -->
-    <el-row>
-      <el-col>
-        <slot name="keng">子组件萝卜坑</slot>
-        <slot name="body">子组件body</slot>
-        <slot>子组件匿名插槽</slot>
-      </el-col>
-      <el-col>
-        <slot name="head" />
-        <slot name="main" />
-        <slot name="foot" />
-      </el-col>
-      <el-col>
-        <slot name="value" />
-      </el-col>
+      <el-col :span="6"><div class="bg-purple" /></el-col>
+      <el-col :span="6"><div class="bg-purple" /></el-col>
+      <el-col :span="6"><div class="bg-purple" /></el-col>
     </el-row>
   </div>
 </template>
 
 <script>
 export default {
-  props: {
-    layout: String,
-    likes: Number,
-    published: Boolean,
-    comment: Array,
-    author: Object
-  },
   data() {
     return {
       childData: {
