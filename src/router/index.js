@@ -144,6 +144,12 @@ export const constantRoutes = [
         name: 'canvas',
         component: () => import('@/study/canvas/index'),
         meta: { title: 'canvas' }
+      },
+      {
+        path: 'export',
+        name: 'export',
+        component: () => import('@/study/export/xlxs.vue'),
+        meta: { title: 'export' }
       }
     ]
   },
