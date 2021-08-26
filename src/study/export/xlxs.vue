@@ -1,4 +1,5 @@
 <template>
+  <!-- 安卓包名导出文件 -->
   <div>
     <br>
     <br>
@@ -9,29 +10,39 @@
 </template>
 
 <script>
+// 导入依赖包
+// npm install --save file-saver
+// npm install xlsx --save
 import FileSaver from 'file-saver'
 import XLSX from 'xlsx'
+import { getList } from '@/api/table'
 
 export default {
   data() {
     return {
-
+      userList: []
     }
   },
   methods: {
-
     // 导出数据
     exportData() {
+      getList({ pageSize: 10, pageCount: 1 }).then(res => {
+        this.userList = res.data
+      })
       const tableInfo = []
-      this.thirdRemaindIconList.forEach(item => {
+      this.userList.forEach(item => {
+        console.log(item)
         tableInfo.push({
-          'app名称': item.appName,
-          '安卓包名': item.androidList[0].packageName
+          'name': item.username,
+          'id': item.id,
+          'createTime': item.createTime
         })
       })
+
+      // json数据转换为xls文件
       var data = XLSX.utils.json_to_sheet(tableInfo)
       const wb = XLSX.utils.book_new()
-      XLSX.utils.book_append_sheet(wb, data, '安卓包名')
+      XLSX.utils.book_append_sheet(wb, data, '用户列表')
       const wbout = XLSX.write(wb, {
         bookType: 'xlsx',
         bookSST: true,
@@ -39,9 +50,10 @@ export default {
       })
 
       try {
+        // 下载xls文件
         FileSaver.saveAs(
           new Blob([wbout], { type: 'application/octet-stream' }),
-          `安卓包名.xlsx` // 文件名
+          `用户列表.xlsx` // 文件名
         )
       } catch (e) {
         if (typeof console !== 'undefined') {
