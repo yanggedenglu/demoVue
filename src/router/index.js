@@ -144,6 +144,12 @@ export const constantRoutes = [
         name: 'export',
         component: () => import('@/study/export/xlxs.vue'),
         meta: { title: 'export' }
+      },
+      {
+        path: 'directive',
+        name: 'directive',
+        component: () => import('@/study/directive'),
+        meta: { title: 'directive' }
       }
     ]
   },

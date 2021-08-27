@@ -6,6 +6,9 @@ const THUMBNAIL_SCALE = 0.8
 function drawPicture() {
   const promise = new Promise((resolve, reject) => {
     try {
+      // js 创建画布
+      // const agacanvas = document.createElement('canvas')
+
       var imgs = document.getElementById('imgs')
       var image1 = document.getElementById('image1')
 
@@ -50,6 +53,7 @@ function drawPicture() {
         ctx.restore()
       }
 
+      // canvas画布转为blob
       const blob = dataURLToBlob(canvas.toDataURL('image/png'), THUMBNAIL_SCALE)
       resolve({
         file: new window.File([blob], 'desktop.jpg'),

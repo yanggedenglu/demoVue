@@ -1,24 +1,31 @@
 <template>
   <!-- 安卓包名导出文件 -->
   <div>
-    <el-tooltip class="item" effect="dark" content="导出Excel" placement="top">
-      <el-button type="success" size="mini" style="" @click="exportData">导出</el-button>
-    </el-tooltip>
-    <el-tooltip class="item" effect="dark" content="导入Excel" placement="bottom">
-      <el-button type="warning" size="mini" style="" @click="importData">导入</el-button>
-    </el-tooltip>
-    <el-dialog
-      title="提示"
-      :visible.sync="dialogVisible"
-      width="30%"
-      @close="close"
-    >
-      <uploadAndProgress ref="uploader" :loading="loading" :per="per" @fileChange="fileChange" @fileClear="fileClear" />
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submit">确 定</el-button>
-      </span>
-    </el-dialog>
+    <div style="margin: 20px 20px;">
+      <el-tooltip class="item" effect="dark" content="导出Excel" placement="top">
+        <el-button type="success" size="mini" style="" @click="exportData">导出</el-button>
+      </el-tooltip>
+      <el-tooltip class="item" effect="dark" content="导入Excel" placement="bottom">
+        <el-button type="warning" size="mini" style="" @click="importData">导入</el-button>
+      </el-tooltip>
+      <el-dialog
+        title="提示"
+        :visible.sync="dialogVisible"
+        width="30%"
+        @close="close"
+      >
+        <uploadAndProgress ref="uploader" :loading="loading" :per="per" @fileChange="fileChange" @fileClear="fileClear" />
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="submit">确 定</el-button>
+        </span>
+      </el-dialog>
+    </div>
+    <div style="margin: 20px 20px;">
+      <hr>
+      <img id="image1" src="../../../static/img/image1.jpg" width="200" height="200">
+      <el-button type="success" size="mini" style="" @click="exportTxt">导出文件</el-button>
+    </div>
   </div>
 </template>
 
@@ -116,11 +123,35 @@ export default {
       Promise.all(list).then(res => {
         this.dialogVisible = false
       })
+    },
+    // *************************************************************************
+    exportTxt() {
+      // txt
+      var blob = new Blob(['hello,word'], { type: 'text/plain;charset=utf-8' })
+      FileSaver.saveAs(blob, 'hello.txt')
+
+      // canvas画布  savaAs保存空白画布
+      const canvas = document.createElement('canvas')
+      canvas.width = 200
+      canvas.height = 200
+      const ctx = canvas.getContext('2d')
+      const image1 = document.getElementById('image1')
+      ctx.drawImage(image1, 0, 0, 200, 200)
+      // canvas.toBlob(function(blob) {
+      //   saveAs(blob, 'desktop.png')
+      // }, 'image/jpeg', 0.95)
     }
   }
 }
 </script>
 
 <style>
+ h1{
+  text-shadow: 3px 3px 3px black;
 
+}
+img{
+  display: block;
+  margin: 0px auto;
+}
 </style>
