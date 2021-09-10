@@ -40,7 +40,7 @@
       <h2>上传</h2>
       <hr>
       <el-button type="danger" @click="dialogUpload = true">上传+进度条</el-button>
-      <el-button type="danger" @click="timer">timer</el-button>
+      <el-button type="danger" @click="timer">获取时间</el-button>
       <!-- dialog -->
       <el-dialog
         title="提示"

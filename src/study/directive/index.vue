@@ -17,6 +17,9 @@ export default {
         // alert('hhh')
       },
       update: function(el, binding, vnode) {
+        console.log(binding.name)
+        el.style.backgroundColor = binding.value
+        el.style.color = binding.arg
       },
       inserted(el) {
         el.focus()

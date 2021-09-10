@@ -71,7 +71,7 @@ export default {
         ctx.drawImage(icon, 0, 0)
       }
     },
-    // 新建第三章画布，存储模糊层上的图片
+    // 新建第三张画布，存储模糊层上的图片
     drawPicture2() {
       var imgs = document.getElementById('imgs')
       var image1 = document.getElementById('image1')

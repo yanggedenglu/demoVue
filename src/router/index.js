@@ -122,12 +122,6 @@ export const constantRoutes = [
         meta: { title: 'upload', icon: 'form' }
       },
       {
-        path: 'transition',
-        name: 'transition',
-        component: () => import('@/study/transition/index'),
-        meta: { title: 'transition', icon: 'form' }
-      },
-      {
         path: 'select',
         name: 'select',
         component: () => import('@/study/select/index'),
