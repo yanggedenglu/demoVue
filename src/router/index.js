@@ -108,6 +108,12 @@ export const constantRoutes = [
         name: 'radio',
         component: () => import('@/views/element/radio/index'),
         meta: { title: 'radio', icon: 'table' }
+      },
+      {
+        path: 'cascader',
+        name: 'cascader',
+        component: () => import('@/views/element/cascader/index'),
+        meta: { title: 'cascader', icon: 'table' }
       }
     ]
   },
