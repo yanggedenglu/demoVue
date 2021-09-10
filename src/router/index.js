@@ -87,17 +87,26 @@ export const constantRoutes = [
         name: 'ComIndex',
         component: () => import('@/views/test/index'),
         meta: { title: '组件', icon: 'table' }
-      },
+      }
+    ]
+  },
+  {
+    path: '/element',
+    name: 'element',
+    redirect: '/element/layout',
+    meta: { title: 'element', icon: 'eye' },
+    component: Layout,
+    children: [
       {
         path: 'layout',
         name: 'layout',
-        component: () => import('@/views/layout/index'),
+        component: () => import('@/views/element/layout/index'),
         meta: { title: 'layout布局', icon: 'layout' }
       },
       {
         path: 'radio',
         name: 'radio',
-        component: () => import('@/views/radio/index'),
+        component: () => import('@/views/element/radio/index'),
         meta: { title: 'radio', icon: 'table' }
       }
     ]

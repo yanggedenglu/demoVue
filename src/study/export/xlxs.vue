@@ -33,10 +33,11 @@
 // 导入依赖包
 // npm install --save file-saver
 // npm install xlsx --save
-import FileSaver from 'file-saver'
+import { saveAs } from 'file-saver'
 import XLSX from 'xlsx'
 import { getList } from '@/api/table'
 import uploadAndProgress from '@/components/uploadAndProgress'
+import { upload } from '@/api/upload'
 
 export default {
   components: { uploadAndProgress },
@@ -56,7 +57,7 @@ export default {
       getList({ pageSize: 10, pageCount: 1 }).then(res => {
         this.userList = res.data
         res.data.forEach(item => {
-          console.log(item)
+          // console.log(item)
           tableInfo.push({
             'name': item.username,
             'id': item.id,
@@ -75,11 +76,8 @@ export default {
         })
 
         try {
-        // 下载xls文件
-          FileSaver.saveAs(
-            new Blob([wbout], { type: 'application/octet-stream' }),
-            `用户列表.xlsx` // 文件名
-          )
+          // 下载xls文件
+          saveAs(new Blob([wbout], { type: 'application/octet-stream' }), `用户列表.xlsx`)
         } catch (e) {
           if (typeof console !== 'undefined') {
             this.$message.error('导出数据失败')
@@ -94,7 +92,6 @@ export default {
     },
     // 回调-获取文件列表
     fileChange(data) {
-      console.log(data)
       this.fileList.push(data.file)
       this.per = this.fileList.length
     },
@@ -113,33 +110,42 @@ export default {
     submit() {
       const list = []
       this.fileList.forEach(item => {
+        const form = new FormData()
+        form.append('file', item)
         const pro = new Promise(res => {
-          // console.log(item)
-          this.$refs.uploader.getData(true)
-          res({ result: true })
+          upload(form).then(response => {
+            res(response)
+          })
         })
         list.push(pro)
       })
+
       Promise.all(list).then(res => {
-        this.dialogVisible = false
+        console.log(res)
+        this.$message({ message: '成功',
+          type: 'success', duration: 1500 })
+      }).catch(err => {
+        console.error(err)
       })
     },
+
     // *************************************************************************
+    // 导出文件
     exportTxt() {
       // txt
-      var blob = new Blob(['hello,word'], { type: 'text/plain;charset=utf-8' })
-      FileSaver.saveAs(blob, 'hello.txt')
+      // var blob = new Blob(['hello'], { type: 'text/plain;charset=utf-8' })
+      // FileSaver.saveAs(blob, 'hello.txt')
 
       // canvas画布  savaAs保存空白画布
       const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d')
       canvas.width = 200
       canvas.height = 200
-      const ctx = canvas.getContext('2d')
       const image1 = document.getElementById('image1')
       ctx.drawImage(image1, 0, 0, 200, 200)
-      // canvas.toBlob(function(blob) {
-      //   saveAs(blob, 'desktop.png')
-      // }, 'image/jpeg', 0.95)
+      canvas.toBlob(function(blob) {
+        saveAs(blob, 'desktop.png')
+      })
     }
   }
 }

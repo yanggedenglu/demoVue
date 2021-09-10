@@ -18,7 +18,7 @@
 <script>
 import ButtonCom from './component.vue'
 import ButtonCom2 from './componenttwo.vue'
-import layout from '../layout/index.vue'
+import layout from '../element/layout/index.vue'
 
 export default {
   name: 'ComIndex',
