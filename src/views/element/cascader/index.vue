@@ -36,10 +36,15 @@
       <el-table-column prop="amount2" sortable label="数值 2" />
       <el-table-column prop="amount3" sortable label="数值 3" />
     </el-table>
+    <hr>
+    <span class="demonstration" />
+    <br>
+
   </div>
 </template>
 
 <script>
+
 export default {
   name: 'Cascader',
   data() {
@@ -120,7 +125,9 @@ export default {
         amount1: '539',
         amount2: '4.1',
         amount3: 15
-      }]
+      }],
+      startVal: 0,
+      endVal: 3000
     }
   },
   methods: {
@@ -131,11 +138,24 @@ export default {
       console.log(value)
     },
     arraySpanMethod({ row, column, rowIndex, columnIndex }) {
-      if (rowIndex % 2 === 0) {
-        if (columnIndex === 0) {
-          return [1, 2]
-        } else if (columnIndex === 1) {
-          return [0, 0]
+      // if (rowIndex % 2 === 0) {
+      //   if (columnIndex === 0) {
+      //     return [1, 2]
+      //   } else if (columnIndex === 1) {
+      //     return [0, 0]
+      //   }
+      // }
+      if (columnIndex === 0) {
+        if (rowIndex % 2 === 0) {
+          return {
+            rowspan: 2,
+            colspan: 1
+          }
+        } else {
+          return {
+            rowspan: 0,
+            colspan: 0
+          }
         }
       }
     }
