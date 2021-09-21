@@ -6,7 +6,8 @@ export function getLog(params) {
   return request({
     // url: '/vue-admin-template/table/list',
     url: 'http://localhost:8770/log',
-    method: 'get'
+    method: 'get',
+    params: { 'pathId': params.pathId, 'row': params.row }
   })
 }
 
