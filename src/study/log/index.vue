@@ -46,28 +46,22 @@ export default {
     }
   },
   created() {
-    // 后端重置读取位置
+    // 后端重置读取日志信息位置
     Close()
     this.start()
-    // 实现轮询读取日志
-    // this.myInterval = window.setInterval(() => {
-    //   setTimeout(this.getLog(), 0)
-    // }, 1000)
   },
   destroyed() {
-    // 关闭轮询
     this.close()
-    // clearInterval(this.myInterval)
   },
   methods: {
-    // 实现轮询读取日志
     start() {
+      // 实现轮询读取日志
       this.myInterval = window.setInterval(() => {
         setTimeout(this.getLog(), 0)
       }, 1000)
     },
-    // 关闭轮询
     close() {
+      // 关闭轮询
       clearInterval(this.myInterval)
     },
     // 读取日志
@@ -92,7 +86,7 @@ export default {
       })
     },
     change() {
-      // 充值状态
+      // 重置状态
       this.close()
       Close()
       this.log = ''
