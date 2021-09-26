@@ -19,3 +19,11 @@ export function Close(params) {
   })
 }
 
+export function getBeforeLog(params) {
+  return request({
+    url: 'http://localhost:8770/before/' + params.pathId + '/' +
+      params.startPage + '/' + params.endPage,
+    method: 'get'
+  })
+}
+
