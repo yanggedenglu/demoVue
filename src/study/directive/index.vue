@@ -5,6 +5,37 @@
     <el-input v-model="message" v-force:blue="message" type="text" />
     <el-button type="success" size="mini">自定义指令</el-button>
     <br>
+    <el-tab-pane label="缓存管理" name="cache">
+      <el-col>
+        <el-col :span="1" align="left">
+          <el-button style="margin-left:2.5%" type="success" icon="el-icon-refresh" circle plain @click="command()" />
+        </el-col>
+        <el-col :span="4" align="left">
+          <el-form>
+            <el-form-item label="数据更新时间">
+              {{ responseDataLastTime === 0 ? "":$rbac.f(new Date(responseDataLastTime)) }}
+            </el-form-item>
+          </el-form>
+        </el-col>
+      </el-col>
+
+      <el-table ref="pageTable" v-loading="loading" :data="responseCacheData" border>
+        <el-table-column label="缓存名称" align="center" prop="cacheName" sortable />
+        <el-table-column label="服务器更新时间" align="center" sortable>
+          <template slot-scope="scope">{{ (scope.row.refreshTime && parseFloat(scope.row.refreshTime) !== 0) ? $rbac.f(parseFloat(scope.row.refreshTime )) : "" }} </template>
+        </el-table-column>
+        <el-table-column label="客户端更新时间" align="center" sortable>
+          <template slot-scope="scope">{{ (scope.row.lastExecuteTime && parseFloat(scope.row.lastExecuteTime) !== 0) ? $rbac.f(parseFloat(scope.row.lastExecuteTime)) : "" }}</template>
+        </el-table-column>
+        <el-table-column label="操作" align="center" prop="lastTime" sortable>
+          <template slot-scope="scope">
+            <el-tag v-if="!scope.row.isConfig" type="danger">暂无缓存配置</el-tag>
+            <el-tag v-if="!scope.row.isExist" type="danger">客户端无此缓存</el-tag>
+            <el-button v-if="scope.row.isConfig && scope.row.isExist" type="warning" size="mini" @click="refreshCache(scope.row)">刷新</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-tab-pane>
     <!-- <el-tab-pane label="日志文件" name="logfile">
         <div style="float:left;">
           <el-select v-model="log_pathId" placeholder="请选择" @change="logChange">
