@@ -117,92 +117,26 @@ export default {
       Close()
       this.log = ''
       // 创建新table
-      const vm = this
-      vm.$el.querySelector('.log-viewer > table').remove('pre')
-      const table = document.createElement('table')
-      table.rel = 'stylesheet'
-      table.type = 'text/css'
-      vm.$el.querySelector('.log-viewer').appendChild(table)
+      this.createLabel(null, 'table')
       // 开启轮询
       this.start()
+    },
+    createLabel(data, element) {
+      const vm = this
+      if (element === 'pre') {
+        const pre = document.createElement(element)
+        pre.rel = 'stylesheet'
+        pre.type = 'text/css'
+        pre.innerHTML = data
+        vm.$el.querySelector('.log-viewer > table').appendChild(pre)
+      } else if (element === 'table') {
+        vm.el.querySelector('.log-viewer').remove('table')
+        const table = document.createElement('table')
+        table.rel = 'stylesheet'
+        table.type = 'text/css'
+        vm.$el.querySelector('.log-viewer').appendChild(table)
+      }
     }
-    // getLogFile() {
-    //   // 读取日志
-    //   InstanceApi.getLogFile(this.log_pathId, this.pageSize).then(res => {
-    //     if (res.result !== '') {
-    //       this.log += res.result
-    //       const split = res.result.split('\n')
-    //       split.forEach(item => {
-    //         const pre = this.createPre(item, 'pre')
-    //         const vm = this
-    //         vm.$el.querySelector('.log-viewer > table').appendChild(pre)
-    //       })
-    //     }
-    //   })
-    // },
-    // logChange() {
-    //   this.logClose()
-    //   // 开启轮询
-    //   this.handleLogfileResponseData()
-    // },
-    // logQuery() {
-    //   const vm = this
-    //   const split = this.log.split('\n')
-    //   vm.$el.querySelector('.log-viewer > table').remove('pre')
-    //   const table = this.createPre(null, 'table')
-    //   vm.$el.querySelector('.log-viewer').appendChild(table)
-
-    //   if (this.log_level.trim() === '' && this.log_text.trim() === '') {
-    //     this.$message.success('请输入查询条件')
-    //     split.forEach(item => {
-    //       const pre = this.createPre(item, 'pre')
-    //       vm.$el.querySelector('.log-viewer > table').appendChild(pre)
-    //     })
-    //   } else {
-    //     split.forEach(item => {
-    //       const pre = this.createPre(item, 'pre')
-
-    //       if (this.log_level.trim() !== '' && this.log_text.trim() === '') {
-    //         if (item.includes(this.log_level)) {
-    //           vm.$el.querySelector('.log-viewer > table').appendChild(pre)
-    //         }
-    //       } else if (this.log_level.trim() === '' && this.log_text.trim() !== '') {
-    //         if (item.includes(this.log_text)) {
-    //           vm.$el.querySelector('.log-viewer > table').appendChild(pre)
-    //         }
-    //       } else {
-    //         if (item.includes(this.log_level)) {
-    //           if (item.includes(this.log_text)) {
-    //             vm.$el.querySelector('.log-viewer > table').appendChild(pre)
-    //           }
-    //         }
-    //       }
-    //     })
-    //   }
-    // },
-    // logClose() {
-    //   this.log = ''
-    //   this.log_text = ''
-    //   this.log_level = ''
-    //   // 关闭轮询
-    //   clearInterval(this.myInterval)
-    //   // 重置日志读取位置
-    //   InstanceApi.logClose().then(() => { })
-    //   // 创建新table
-    //   const vm = this
-    //   vm.$el.querySelector('.log-viewer > table').remove('pre')
-    //   const table = this.createPre(null, 'table')
-    //   vm.$el.querySelector('.log-viewer').appendChild(table)
-    // },
-    // createPre(item, element) {
-    //   const label = document.createElement(element)
-    //   label.rel = 'stylesheet'
-    //   label.type = 'text/css'
-    //   if (item !== null) {
-    //     label.innerHTML = item
-    //   }
-    //   return label
-    // },
   }
 }
 </script>
