@@ -37,7 +37,7 @@ export default {
     return {
       myInterval: '',
       log: '',
-      row: 10,
+      row: 200,
       log_pathId: 1,
       log_level: '',
       log_text: '',
@@ -126,15 +126,17 @@ export default {
     // 日志上一页
     getBeforeLog() {
       const vm = this
-      const endPage = this.row + 10
+      const endPage = this.row + 200
       const startPage = this.row
-      this.row += 10
-      vm.$el.querySelector('.log-viewer > table').remove('pre')
-      const table = this.createPre(null, 'table')
-      vm.$el.querySelector('.log-viewer').appendChild(table)
+      this.row += 200
+
       getBeforeLog({ 'pathId': this.log_pathId, 'startPage': startPage, 'endPage': endPage })
         .then(res => {
+          console.log(res.data !== '')
           if (res.data !== '') {
+            vm.$el.querySelector('.log-viewer > table').remove('pre')
+            const table = this.createPre(null, 'table')
+            vm.$el.querySelector('.log-viewer').appendChild(table)
             this.log = res.data + this.log
             const split = this.log.split('\n')
             split.forEach(item => {
@@ -182,6 +184,11 @@ table{
   background-color: #f5f5f5;
 }
 
+.log-viewer{
+  height: 500px;
+  width: 100%;
+  overflow: auto;
+}
 pre {
   word-wrap: break-word;
   white-space: pre-wrap;
