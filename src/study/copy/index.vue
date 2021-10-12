@@ -1,4 +1,10 @@
 <template>
+  <!--
+    vue对象复制（深拷贝，多层对象拷贝方式在后面）
+  https://blog.csdn.net/liusa825983081/article/details/118723285?ops_request_misc=&request_id=&biz_id=102
+  &utm_term=vue%E4%B8%AD%E5%A4%8D%E5%88%B6%E5%9B%BE%E7%89%87%E5%AF%B9%E8%B1%A1&utm_medium=distribute.pc_search_result
+  .none-task-blog-2~all~sobaiduweb~default-2-118723285.pc_search_result_hbase_insert&spm=1018.2226.3001.4187
+ -->
   <div>
     <br>
     拷贝对象，看控制台
