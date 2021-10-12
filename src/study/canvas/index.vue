@@ -1,4 +1,11 @@
 <template>
+  <!--
+    “HTML5画布” 的知识点
+    https://blog.csdn.net/azl397985856/article/details/108138528?ops_request_misc=%257B%2522request%255Fid%2522%253A
+    %2522162919247916780264025674%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&request_id=162919247916780264025674
+    &biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_v2~rank_v29-1-108138528
+    .pc_search_result_control_group&utm_term=js+canva%E9%AB%98%E6%96%AF%E6%A8%A1%E7%B3%8A&spm=1018.2226.3001.4187
+   -->
   <div class="hello">
     <img id="imgs" src="../../../static/img/12-oppo_default_wallpaper.jpg">
     <img id="image1" src="../../../static/img/image1.jpg">

@@ -13,6 +13,7 @@ src--
   study--学习demo
       canvas---画布
       component---组件
+      copy---对象深拷贝
       directive---自定义指令
       export---xls文件导出
       log---实时读取日志
