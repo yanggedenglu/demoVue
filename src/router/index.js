@@ -165,6 +165,12 @@ export const constantRoutes = [
         name: 'log',
         component: () => import('@/study/log'),
         meta: { title: 'log' }
+      },
+      {
+        path: 'test',
+        name: 'test',
+        component: () => import('@/study/test'),
+        meta: { title: 'test' }
       }
     ]
   },
