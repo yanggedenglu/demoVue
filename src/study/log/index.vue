@@ -1,29 +1,36 @@
 <template>
   <div>
     <h1>1</h1>
-    <div style="float:left;">
-      <el-select v-model="log_pathId" placeholder="请选择" @change="logChange">
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        />
-      </el-select>
-      <el-button type="primary" style="margin-left:10px;" @click="getBeforeLog">上一页</el-button>
-    </div>
-    <div style="float:right;">
-      <el-select v-model="log_level" placeholder="请选择日志级别" clearable style="margin-left:10px;">
-        <el-option
-          v-for="item in logLevels"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        />
-      </el-select>
-      <el-input v-model="log_text" placeholder="请输入查找内容" clearable style="margin-left:10px;width:300px;" />
-      <el-button type="primary" style="margin-left:10px;" @click="logQuery">查询</el-button>
-    </div>
+    <el-select v-model="pathId" placeholder="请选择" @change="change">
+      <el-option
+        v-for="item in options"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value"
+      />
+    </el-select>
+    <el-select v-model="row" placeholder="请选择" @change="change">
+      <el-option
+        v-for="item in rows"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value"
+      />
+    </el-select>
+    <!-- <el-form ref="log_form" :model="log_form" class="demo-dynamic">
+            <el-form-item
+              v-for="(domain, index) in log_form.op"
+              :key="domain.key"
+              :prop="'op.' + index"
+              :rules="{ required: true, message: '查询信息', trigger: 'blur' }"
+              style="float:left;">
+              <el-input v-model="domain.log_txt" placeholder="请输入查询条件" clearable @change="logQuery" />
+              <el-checkbox v-model="domain.log_checkbox" label="反选" border @change="logQuery"/>
+              <el-button v-if="index > 0" type="danger" icon="el-icon-delete" @click.prevent="removeDomain(domain)"/>
+              <el-button icon="el-icon-plus" @click="addDomain"/>
+            </el-form-item>
+          </el-form>
+          <el-button type="primary" style="float:left" @click="getBeforeLogFile">上一页</el-button> -->
     <div class="log-viewer">
       <table />
     </div>
@@ -50,6 +57,28 @@ export default {
         { label: 'ERROR', value: 'ERROR' },
         { lebel: 'WARN', value: 'WRAN' }
       ]
+
+      // log_pathId: 1,
+      // log_pageSize: 200,
+      // options: [
+      //   { label: 'info', value: 1 },
+      //   { label: 'error', value: 2 }
+      // ],
+      // log_level: '',
+      // logLevels: [
+      //   { label: 'TRACE', value: 'TRACE' },
+      //   { label: 'DEBUG', value: 'DEBUG' },
+      //   { label: 'INFO', value: 'INFO' },
+      //   { label: 'WARN', value: 'WARN' },
+      //   { label: 'ERROR', value: 'ERROR' },
+      //   { label: 'OFF', value: 'OFF' }
+      // ],
+      // log_form: {
+      //   op: [{
+      //     log_txt: '',
+      //     log_checkbox: false
+      //   }]
+      // }
     }
   },
   created() {
@@ -155,20 +184,41 @@ export default {
       // 重置日志读取位置
       Close()
       // 创建新table
-      const vm = this
-      vm.$el.querySelector('.log-viewer > table').remove('pre')
-      const table = this.createPre(null, 'table')
-      vm.$el.querySelector('.log-viewer').appendChild(table)
+      this.createLabel(null, 'table')
+      // 开启轮询
+      this.start()
     },
-    createPre(item, element) {
-      const label = document.createElement(element)
-      label.rel = 'stylesheet'
-      label.type = 'text/css'
-      if (item !== null) {
-        label.innerHTML = item
+    createLabel(data, element) {
+      const vm = this
+      if (element === 'pre') {
+        const pre = document.createElement(element)
+        pre.rel = 'stylesheet'
+        pre.type = 'text/css'
+        pre.innerHTML = data
+        vm.$el.querySelector('.log-viewer > table').appendChild(pre)
+      } else if (element === 'table') {
+        vm.el.querySelector('.log-viewer').remove('table')
+        const table = document.createElement('table')
+        table.rel = 'stylesheet'
+        table.type = 'text/css'
+        vm.$el.querySelector('.log-viewer').appendChild(table)
       }
-      return label
     }
+
+    // addDomain() {
+    //   this.log_form.op.push({
+    //     log_txt: '',
+    //     log_checkbox: false,
+    //     key: Date.now()
+    //   })
+    // },
+    // removeDomain(item) {
+    //   var index = this.log_form.op.indexOf(item)
+    //   if (index !== -1) {
+    //     this.log_form.op.splice(index, 1)
+    //   }
+    //   this.logQuery()
+    // },
   }
 }
 </script>
@@ -178,8 +228,14 @@ html{
   line-height: 1
 }
 
+.log-viewer{
+  overflow-x: auto;
+  overflow-y: auto;
+  width: 100%;
+  height: 700px;
+}
+
 table{
-  width:90%;
   margin-left:10px;
   background-color: #f5f5f5;
 }
