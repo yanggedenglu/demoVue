@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import ExampleRouter from './modules/example'
+import ElementRouter from './modules/element'
+import StudyRouter from './modules/study'
+import VueElementAdmin from './modules/vueElementAdmin'
 
 Vue.use(Router)
 
-/* Layout */
 import Layout from '@/layout'
-// import { title } from '@/settings'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -50,11 +52,11 @@ export const constantRoutes = [
     hidden: true
   },
 
-  {
-    path: '/404',
-    component: () => import('@/views/404'),
-    hidden: true
-  },
+  // {
+  //   path: '/404',
+  //   component: () => import('@/views/404'),
+  //   hidden: true
+  // },
 
   {
     path: '/',
@@ -68,112 +70,14 @@ export const constantRoutes = [
       meta: { title: 'Dashboard', icon: 'dashboard' }
     }]
   },
-
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: '用户管理', icon: 'el-icon-s-help' },
-    children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: '用户信息', icon: 'table' }
-      },
-      {
-        path: 'test',
-        name: 'ComIndex',
-        component: () => import('@/views/test/index'),
-        meta: { title: '组件', icon: 'table' }
-      }
-    ]
-  },
-  {
-    path: '/element',
-    name: 'element',
-    redirect: '/element/layout',
-    meta: { title: 'element', icon: 'eye' },
-    component: Layout,
-    children: [
-      {
-        path: 'layout',
-        name: 'layout',
-        component: () => import('@/views/element/layout/index'),
-        meta: { title: 'layout布局', icon: 'layout' }
-      },
-      {
-        path: 'radio',
-        name: 'radio',
-        component: () => import('@/views/element/radio/index'),
-        meta: { title: 'radio', icon: 'table' }
-      },
-      {
-        path: 'cascader',
-        name: 'cascader',
-        component: () => import('@/views/element/cascader/index'),
-        meta: { title: 'cascader', icon: 'table' }
-      }
-    ]
-  },
-  {
-    path: '/study',
-    name: 'study',
-    redirect: '/study/main',
-    meta: { title: 'study', icon: 'eye' },
-    component: Layout,
-    children: [
-      {
-        path: 'main',
-        name: 'main',
-        component: () => import('@/study/main/index'),
-        meta: { title: 'main', icon: 'form' }
-      },
-      {
-        path: 'upload',
-        name: 'upload',
-        component: () => import('@/study/upload/index'),
-        meta: { title: 'upload', icon: 'form' }
-      },
-      {
-        path: 'select',
-        name: 'select',
-        component: () => import('@/study/select/index'),
-        meta: { title: 'select' }
-      },
-      {
-        path: 'canvas',
-        name: 'canvas',
-        component: () => import('@/study/canvas/index'),
-        meta: { title: 'canvas' }
-      },
-      {
-        path: 'export',
-        name: 'export',
-        component: () => import('@/study/export/xlxs.vue'),
-        meta: { title: 'export' }
-      },
-      {
-        path: 'directive',
-        name: 'directive',
-        component: () => import('@/study/directive'),
-        meta: { title: 'directive' }
-      },
-      {
-        path: 'log',
-        name: 'log',
-        component: () => import('@/study/log'),
-        meta: { title: 'log' }
-      },
-      {
-        path: 'copy',
-        name: 'copy',
-        component: () => import('@/study/copy'),
-        meta: { title: 'copy' }
-      }
-    ]
-  },
+  // example菜单
+  ExampleRouter,
+  // element菜单
+  ElementRouter,
+  // study菜单
+  StudyRouter,
+  // vue-element-admin 模板
+  VueElementAdmin,
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
