@@ -32,30 +32,30 @@
           </el-form>
           <el-button type="primary" style="float:left" @click="getBeforeLogFile">上一页</el-button> -->
     <div class="log-viewer">
-      <br>
-      <!-- 定义的table作为存放日志数据标签的父类 -->
       <table />
     </div>
   </div>
 </template>
 
 <script>
-import { getLog, Close } from '@/api/log'
+import { getLog, Close, getBeforeLog } from '@/api/log'
 export default {
   data() {
     return {
       myInterval: '',
       log: '',
       row: 200,
-      pathId: 1,
+      log_pathId: 1,
+      log_level: '',
+      log_text: '',
       options: [
         { label: 'info', value: 1 },
         { label: 'error', value: 2 }
       ],
-      rows: [
-        { label: 100, value: 100 },
-        { label: 200, value: 200 },
-        { label: 300, value: 300 }
+      logLevels: [
+        { label: 'INFO', value: 'INFO' },
+        { label: 'ERROR', value: 'ERROR' },
+        { lebel: 'WARN', value: 'WRAN' }
       ]
 
       // log_pathId: 1,
@@ -87,45 +87,102 @@ export default {
     this.start()
   },
   destroyed() {
-    this.close()
+    this.logClose()
   },
   methods: {
     start() {
       // 实现轮询读取日志
       this.myInterval = window.setInterval(() => {
-        setTimeout(this.getLog(), 0)
+        setTimeout(this.getLogFile(), 0)
       }, 1000)
     },
-    close() {
-      // 关闭轮询
-      clearInterval(this.myInterval)
-    },
     // 读取日志
-    getLog() {
+    getLogFile() {
       const vm = this
-      getLog({ 'pathId': this.pathId, 'row': this.row }).then(res => {
+      getLog({ 'pathId': this.log_pathId, 'row': this.row }).then(res => {
         if (res.data !== '') {
-          this.log = res.data
-          const split = this.log.split('\n')
+          this.log += res.data
+          const split = res.data.split('\n')
           split.forEach(item => {
-            // const row = document.createElement('tr')
-            // const col = document.createElement('td')
-            const pre = document.createElement('pre')
-            pre.rel = 'stylesheet'
-            pre.type = 'text/css'
-            pre.innerHTML = item
-            // col.appendChild(pre)
-            // row.appendChild(col)
+            const pre = this.createPre(item, 'pre')
             vm.$el.querySelector('.log-viewer > table').appendChild(pre)
           })
         }
       })
     },
-    change() {
-      // 重置状态
-      this.close()
-      Close()
+    // 日志切换
+    logChange() {
+      this.logClose()
+      // 开启轮询
+      this.start()
+    },
+    // 日志查询
+    logQuery() {
+      const vm = this
+      const split = this.log.split('\n')
+      vm.$el.querySelector('.log-viewer > table').remove('pre')
+      const table = this.createPre(null, 'table')
+      vm.$el.querySelector('.log-viewer').appendChild(table)
+
+      if (this.log_level.trim() === '' && this.log_text.trim() === '') {
+        this.$message.success('请输入查询条件')
+        split.forEach(item => {
+          const pre = this.createPre(item, 'pre')
+          vm.$el.querySelector('.log-viewer > table').appendChild(pre)
+        })
+      } else {
+        split.forEach(item => {
+          const pre = this.createPre(item, 'pre')
+
+          if (this.log_level.trim() !== '' && this.log_text.trim() === '') {
+            if (item.includes(this.log_level)) {
+              vm.$el.querySelector('.log-viewer > table').appendChild(pre)
+            }
+          } else if (this.log_level.trim() === '' && this.log_text.trim() !== '') {
+            if (item.includes(this.log_text)) {
+              vm.$el.querySelector('.log-viewer > table').appendChild(pre)
+            }
+          } else {
+            if (item.includes(this.log_level)) {
+              if (item.includes(this.log_text)) {
+                vm.$el.querySelector('.log-viewer > table').appendChild(pre)
+              }
+            }
+          }
+        })
+      }
+    },
+    // 日志上一页
+    getBeforeLog() {
+      const vm = this
+      const endPage = this.row + 200
+      const startPage = this.row
+      this.row += 200
+
+      getBeforeLog({ 'pathId': this.log_pathId, 'startPage': startPage, 'endPage': endPage })
+        .then(res => {
+          console.log(res.data !== '')
+          if (res.data !== '') {
+            vm.$el.querySelector('.log-viewer > table').remove('pre')
+            const table = this.createPre(null, 'table')
+            vm.$el.querySelector('.log-viewer').appendChild(table)
+            this.log = res.data + this.log
+            const split = this.log.split('\n')
+            split.forEach(item => {
+              const pre = this.createPre(item, 'pre')
+              vm.$el.querySelector('.log-viewer > table').appendChild(pre)
+            })
+          }
+        })
+    },
+    logClose() {
       this.log = ''
+      this.log_text = ''
+      this.log_level = ''
+      // 关闭轮询
+      clearInterval(this.myInterval)
+      // 重置日志读取位置
+      Close()
       // 创建新table
       this.createLabel(null, 'table')
       // 开启轮询
@@ -183,6 +240,11 @@ table{
   background-color: #f5f5f5;
 }
 
+.log-viewer{
+  height: 500px;
+  width: 100%;
+  overflow: auto;
+}
 pre {
   word-wrap: break-word;
   white-space: pre-wrap;

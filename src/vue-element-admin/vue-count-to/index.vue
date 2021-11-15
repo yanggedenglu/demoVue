@@ -1,6 +1,6 @@
 <template>
   <div>
-    <countTo ref="countTo" :start-val="startVal" :end-val="endVal" :duration="2000" />
+    <count-to ref="countTo" :start-val="startVal" :end-val="endVal" :duration="2000" />
     <el-button @click="startCount">start</el-button>
     <el-button @click="endCount">end</el-button>
     <el-button @click="resetCount">reset</el-button>
@@ -15,18 +15,21 @@ export default {
   },
   data() {
     return {
-      startVal: 0,
-      endVal: 3000
+      startVal: 0, // 初始值
+      endVal: 3000 // 结束值
     }
   },
   methods: {
     startCount() {
+      // 开始
       this.$refs.countTo.start()
     },
     endCount() {
+      // 暂停
       this.$refs.countTo.pause()
     },
     resetCount() {
+      // 重置
       this.$refs.countTo.reset()
     }
   }

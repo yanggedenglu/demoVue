@@ -167,6 +167,7 @@ export default {
     timer() {
       var myDate = new Date()// 获取的是本机时间
       console.log(myDate.getYear())
+      console.log(myDate.getTime())
       // 在浏览器内 getYear 返回的是 "当前年份-1900" 的值，IE则是直接将1900加上了，返回的 2017。
       console.log('获取完整的年份(4位)---' + myDate.getFullYear()) // 可正确获取年份
       console.log('获取当前月份(0-11)---' + myDate.getMonth()) // 0代表1月
