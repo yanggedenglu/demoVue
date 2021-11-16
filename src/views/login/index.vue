@@ -81,8 +81,8 @@ export default {
       loginForm: {
         username: 'admin',
         // 公司111111
-        // password: '111111'
-        password: 'admin'
+        password: '111111'
+        // password: 'admin'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],

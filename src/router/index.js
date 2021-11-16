@@ -52,11 +52,12 @@ export const constantRoutes = [
     hidden: true
   },
 
-  // {
-  //   path: '/404',
-  //   component: () => import('@/views/404'),
-  //   hidden: true
-  // },
+  // 注册404页面
+  {
+    path: '/404',
+    component: () => import('@/views/404'),
+    hidden: true
+  },
 
   {
     path: '/',
@@ -79,7 +80,7 @@ export const constantRoutes = [
   // vue-element-admin 模板
   VueElementAdmin,
 
-  // 404 page must be placed at the end !!!
+  // 404页面必须放在最后！！！
   { path: '*', redirect: '/404', hidden: true }
 ]
 

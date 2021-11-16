@@ -5,6 +5,7 @@ src--
   assets--静态资源
   components--组件
       uploadAndProgress---上传 + 进度条组件
+  daily-log--学习日志
   directive--自定义指令
   icons--svg图标
   layout
