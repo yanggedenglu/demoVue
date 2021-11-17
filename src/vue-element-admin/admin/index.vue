@@ -4,6 +4,13 @@
     <one-rows ref="oneRow" @changeChart="changeChart" />
     <two-rows ref="twoRow" :data="data" />
     <three-rows ref="threeRow" :data="data" />
+
+    <!-- css样式 毛玻璃特效 -->
+    <!-- <div>
+      <div class="img-blur" />
+      <img src="../../assets/404_images/111.jpg" width="1284" height="2778">
+    </div> -->
+
   </div>
 </template>
 
@@ -48,5 +55,16 @@ export default {
   display: block;
   background-color: #f0f2f5;
   padding: 10px;
+}
+.img-blur{
+  border-radius: 107px;
+  border: 0px solid #fff;
+  margin: 2000px 0px 0px 37px;
+  width: 1213px;
+  height: 320px;
+  background-color: rgba(163, 163, 163, 0.3);
+  position: absolute;
+  display: inline-block;
+  backdrop-filter: blur(10px);
 }
 </style>

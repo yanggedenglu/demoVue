@@ -45,7 +45,6 @@ export default {
       this.data.actualData = data.actualData
     },
     createChart() {
-      console.log(this.data)
       // 绘制图表
       this.myChart.setOption({
         title: {
