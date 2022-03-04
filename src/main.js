@@ -41,8 +41,8 @@ Vue.use(ElementUI, { locale })
 
 Vue.config.productionTip = false
 
-import componet from './components'
-Vue.use(componet)
+import component from './components'
+Vue.use(component)
 
 new Vue({
   el: '#app',

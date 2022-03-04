@@ -8,22 +8,10 @@ const StudyRouter = {
   component: Layout,
   children: [
     {
-      path: 'main',
-      name: 'main',
-      component: () => import('@/study/main/index'),
-      meta: { title: 'main', icon: 'form' }
-    },
-    {
-      path: 'upload',
-      name: 'upload',
-      component: () => import('@/study/upload/index'),
-      meta: { title: 'upload', icon: 'form' }
-    },
-    {
-      path: 'select',
-      name: 'select',
-      component: () => import('@/study/select/index'),
-      meta: { title: 'select' }
+      path: 'attribute',
+      name: 'attribute',
+      component: () => import('@/study/attribute/index'),
+      meta: { title: 'attribute', icon: 'form' }
     },
     {
       path: 'canvas',
@@ -32,10 +20,10 @@ const StudyRouter = {
       meta: { title: 'canvas' }
     },
     {
-      path: 'export',
-      name: 'export',
-      component: () => import('@/study/export/xlxs.vue'),
-      meta: { title: 'export' }
+      path: 'copy',
+      name: 'copy',
+      component: () => import('@/study/copy'),
+      meta: { title: 'copy' }
     },
     {
       path: 'directive',
@@ -44,16 +32,34 @@ const StudyRouter = {
       meta: { title: 'directive' }
     },
     {
+      path: 'export',
+      name: 'export',
+      component: () => import('@/study/export/xlxs.vue'),
+      meta: { title: 'export' }
+    },
+    {
       path: 'log',
       name: 'log',
       component: () => import('@/study/log'),
       meta: { title: 'log' }
     },
     {
-      path: 'copy',
-      name: 'copy',
-      component: () => import('@/study/copy'),
-      meta: { title: 'copy' }
+      path: 'main',
+      name: 'main',
+      component: () => import('@/study/main/index'),
+      meta: { title: 'main', icon: 'form' }
+    },
+    {
+      path: 'select',
+      name: 'select',
+      component: () => import('@/study/select/index'),
+      meta: { title: 'select' }
+    },
+    {
+      path: 'upload',
+      name: 'upload',
+      component: () => import('@/study/upload/index'),
+      meta: { title: 'upload', icon: 'form' }
     }
   ]
 }

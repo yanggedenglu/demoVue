@@ -5,13 +5,17 @@ src--
   assets--静态资源
   components--组件
       uploadAndProgress---上传 + 进度条组件
+      index.js  --- 全局注册js
   daily-log--学习日志
   directive--自定义指令
   icons--svg图标
-  layout
+  layout--页面布局
+        --components
+            --siderbar  侧边栏
   router--路由
   store--vuex管理
   study--学习demo
+      attribute--Attribute 继承
       canvas---画布
       component---组件
       copy---对象深拷贝

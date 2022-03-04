@@ -1,9 +1,9 @@
 import uploadAndProgress from './uploadAndProgress'
 
-const componet = {
+const component = {
   install: function(Vue) {
-    Vue.componet('upliad', uploadAndProgress)
+    Vue.component('upliad', uploadAndProgress)
   }
 }
 
-export default componet
+export default component
