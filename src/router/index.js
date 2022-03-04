@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import ExampleRouter from './modules/example'
 import ElementRouter from './modules/element'
 import StudyRouter from './modules/study'
+import WorkRouter from './modules/work'
 import VueElementAdmin from './modules/vueElementAdmin'
 
 Vue.use(Router)
@@ -79,6 +80,8 @@ export const constantRoutes = [
   StudyRouter,
   // vue-element-admin 模板
   VueElementAdmin,
+  // work
+  WorkRouter,
 
   // 404页面必须放在最后！！！
   { path: '*', redirect: '/404', hidden: true }
