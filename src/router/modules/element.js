@@ -24,6 +24,12 @@ const ElementRouter = {
       name: 'cascader',
       component: () => import('@/views/element/cascader/index'),
       meta: { title: 'cascader', icon: 'table' }
+    },
+    {
+      path: 'transfer',
+      name: 'transfer',
+      component: () => import('@/views/element/transfer/index'),
+      meta: { title: 'transfer', icon: 'table' }
     }
   ]
 }
