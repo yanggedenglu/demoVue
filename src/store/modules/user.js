@@ -12,8 +12,10 @@ const getDefaultState = () => {
 
 const state = getDefaultState()
 
+// 对state数据的操作；新增，编辑，删除
 const mutations = {
   RESET_STATE: (state) => {
+    // Object.assign 对象合并 浅拷贝
     Object.assign(state, getDefaultState())
   },
   SET_TOKEN: (state, token) => {
@@ -27,6 +29,7 @@ const mutations = {
   }
 }
 
+// 异步操作
 const actions = {
   // user login
   login({ commit }, userInfo) {
@@ -39,13 +42,12 @@ const actions = {
           console.log('账户被冻结')
         } else {
           // commit 提交 mutations 中的方法
+          // commit 同步操作，数据提交至 mutations ，可用于读取用户信息写到缓存里
           commit('SET_NAME', data.username)
-          // SET_TOKEN
           commit('SET_TOKEN', data.id)
 
-          //
-          setToken(data.id)
           // 插入到测试cookie中
+          setToken(data.id)
           setCookie(data.token)
         }
         resolve(response)

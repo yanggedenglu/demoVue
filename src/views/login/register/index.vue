@@ -95,6 +95,7 @@ export default {
       }
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
+          // dispatch 含有异步操作，数据提交至 actions ，可用于向后台提交数据
           this.$store.dispatch('user/register', this.ruleForm).then((response) => {
             if (response.data === -2) {
               this.$message.error('验证码错误')
