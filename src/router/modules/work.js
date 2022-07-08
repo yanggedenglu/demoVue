@@ -8,12 +8,6 @@ const workLayout = {
   component: Layout,
   children: [
     {
-      path: 'main',
-      name: 'main',
-      component: () => import('@/work/main/index'),
-      meta: { title: 'main', icon: 'form' }
-    },
-    {
       path: 'canvas',
       name: 'canvas',
       component: () => import('@/work/canvas/index'),
