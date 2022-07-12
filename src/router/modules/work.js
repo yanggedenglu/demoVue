@@ -12,6 +12,12 @@ const workLayout = {
       name: 'canvas',
       component: () => import('@/work/canvas/index'),
       meta: { title: 'canvas', icon: 'form' }
+    },
+    {
+      path: 'psd',
+      name: 'psd',
+      component: () => import('@/work/psd/index'),
+      meta: { title: 'psd', icon: 'form' }
     }
   ]
 }
