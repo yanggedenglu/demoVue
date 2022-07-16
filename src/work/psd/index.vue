@@ -1,82 +1,36 @@
 <template>
   <div>
-    <el-dialog
-      :loading="loading"
-      :visible.sync="dialogVisible"
-      :before-close="handleClose"
-      title="上传PSD"
-      width="25%"
+    <el-upload
+      :auto-upload="false"
+      :on-change="parsePSD"
+      :on-remove="removePSD"
+      :multiple="false"
+      :file-list="fileList"
+      class="upload-demo"
+      drag
+      action=""
     >
-      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
-        <el-form-item label="名称" prop="name">
-          <el-input v-model="form.name" />
-        </el-form-item>
-        <el-form-item label="顺序" prop="sequence">
-          <el-input v-model.number="form.sequence" />
-        </el-form-item>
-        <el-form-item label="banner图片">
-          <el-upload
-            :auto-upload="false"
-            :on-change="parsePSD"
-            :on-remove="removePSD"
-            :multiple="false"
-            :file-list="fileList"
-            class="upload-demo"
-            drag
-            action=""
-          >
-            <i class="el-icon-upload" />
-            <div class="el-upload__text">点击添加或拖放PSD文件</div>
-          </el-upload>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="handleClose">取 消</el-button>
-        <el-button type="primary" @click="exportData">上传</el-button>
-      </span>
-    </el-dialog>
+      <i class="el-icon-upload" />
+      <div class="el-upload__text">点击添加或拖放PSD文件</div>
+    </el-upload>
+    <span slot="footer" class="dialog-footer">
+      <el-button type="primary" @click="exportData">上传</el-button>
+    </span>
   </div>
 </template>
 
 <script>
-import WidgetPsdApi from '@/api/theme/theme_psd'
 import PSD from 'psd.js'
 export default {
   data() {
     return {
-      loading: false,
-      dialogVisible: false,
-      form: {
-        themeId: '',
-        name: '',
-        sequence: 0
-      },
-      rules: {
-        name: [{ required: true, message: '名称不能为空', trigger: 'blur' }],
-        sequence: [{ required: true, message: '排序不能为空', trigger: 'blur' },
-          { type: 'number', message: '排序只能为数字', trigger: 'blur' }]
-      },
       fileList: [],
       textList: [],
       imageList: [], // image base64列表
-      l_document: '',
       l_background: ''
     }
   },
   methods: {
-    init(row) {
-      this.dialogVisible = true
-      this.$nextTick(() => {
-        this.form.themeId = row.id
-      })
-    },
-    handleClose() {
-      this.dialogVisible = false
-      this.loading = false
-      this.form.themeId = ''
-      this.form.name = ''
-      this.form.sequence = 0
-    },
     parsePSD(file) {
       this.removePSD()
       this.fileList = [file]
@@ -91,6 +45,7 @@ export default {
         this.imageList.push({ file: new window.File([blob], 'background') })
         // 获取图层数据
         const childrens = psd.tree().children()
+
         childrens.forEach(item => {
           if (item._children.length > 0) {
             // 图层文件夹
@@ -117,8 +72,6 @@ export default {
 
         // 导出图层数据
         var exportData = psd.tree().export()
-        this.background_width = exportData.width
-        this.background_height = exportData.height
         const _export_childrens = exportData.children
         for (var i = 0; i < _export_childrens.length; i++) {
           // 顶级图层/文件夹
@@ -138,14 +91,17 @@ export default {
                 this.textList.push(this.setImageData(false, _export_childrens[i], i_child[j], '', name))
               }
             }
+            try {
+              // 截取组件效果图
+              const end = i_child[i_child.length - 1]
+              this.canvasEffectImage(end).then(res => {
+                console.log(res)
+              })
+            } catch (err) {
+              console.log(err)
+            }
           }
         }
-        this.l_document = exportData.document
-      }).then(() => {
-        console.log(this.imageList)
-        this.canvasEffectImage(this.l_document.width, this.l_document.height).then(res => {
-          console.log(res)
-        })
       })
     },
     /**
@@ -185,23 +141,19 @@ export default {
     },
 
     // 裁剪图片
-    canvasEffectImage(width, height) {
+    canvasEffectImage(image) {
       return new Promise((resolve, reject) => {
         try {
           const canvas = document.createElement('canvas')
           const context = canvas.getContext('2d')
-          canvas.width = width
-          canvas.height = height
+          canvas.width = image.width
+          canvas.height = image.height
           const iconImage = new Image()
           iconImage.crossOrigin = 'Anonymous'
           iconImage.src = this.l_background
           iconImage.onload = () => {
-            context.drawImage(iconImage, 0, 0)
-            context.rect(20, 20, 150, 100)
-            context.stroke()
-            context.clip()
-            context.drawImage(canvas, 20, 20)
-            console.log(canvas.toDataURL('image/jpeg', 0.8))
+            context.drawImage(iconImage, image.left, image.top, image.width, image.height, 0, 0, image.width, image.height)
+            // console.log(canvas.toDataURL('image/jpeg', 0.8))
             const blob = this.dataURLToBlob(canvas.toDataURL('image/jpeg', 0.8))
             resolve({ blob: blob })
           }
@@ -252,18 +204,18 @@ export default {
           this.imageList.forEach(item => {
             formData.append('imageList', item.file)
           })
-          WidgetPsdApi.upload(formData).then(res => {
-            if (res.result) {
-              this.$message.success('上传成功')
-              this.fileList = []
-              this.removePSD()
-              this.handleClose()
-              this.$emit('refresh')
-            }
-          }).catch(err => {
-            this.loading = false
-            this.$message.error(err)
-          })
+          // WidgetPsdApi.upload(formData).then(res => {
+          //   if (res.result) {
+          //     this.$message.success('上传成功')
+          //     this.fileList = []
+          //     this.removePSD()
+          //     this.handleClose()
+          //     this.$emit('refresh')
+          //   }
+          // }).catch(err => {
+          //   this.loading = false
+          //   this.$message.error(err)
+          // })
         }
       })
     },
@@ -278,12 +230,12 @@ export default {
       return `#${bin.padStart(6, '0')}`
     },
     /**
-     * dataurl转blob
-     * @param {*} dataurl
+     * dataUrl转blob
+     * @param {*} dataUrl
      * @returns
      */
-    dataURLToBlob(dataurl) {
-      const arr = dataurl.split(',')
+    dataURLToBlob(dataUrl) {
+      const arr = dataUrl.split(',')
       const mime = arr[0].match(/:(.*?);/)[1]
       const bstr = window.atob(arr[1])
       let n = bstr.length
@@ -299,8 +251,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-/deep/ .el-upload-dragger{
+<style scoped>
+.el-upload-dragger{
   width: 300px;
 }
 </style>
+
