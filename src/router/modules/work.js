@@ -10,7 +10,7 @@ const workLayout = {
     {
       path: 'canvas',
       name: 'canvas',
-      component: () => import('@/work/canvas/index'),
+      component: () => import('@/work/canvas/index.vue'),
       meta: { title: 'canvas', icon: 'form' }
     },
     {
