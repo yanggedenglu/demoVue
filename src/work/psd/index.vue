@@ -150,6 +150,7 @@ export default {
           const canvas = document.createElement('canvas')
           // const canvas = document.getElementById('three')
           const context = canvas.getContext('2d')
+          context.fillStyle = 'rgba(255, 255, 255, 0)'
           canvas.width = lastImg.width
           canvas.height = lastImg.height
           const iconImage = new Image()
@@ -158,8 +159,8 @@ export default {
           iconImage.onload = () => {
             this.roundRect(context, 0, 0, lastImg.width, lastImg.height, 22)
             context.drawImage(iconImage, lastImg.left, lastImg.top, lastImg.width, lastImg.height, 0, 0, lastImg.width, lastImg.height)
-            console.log(canvas.toDataURL('image/jpeg', 0.8))
-            const blob = this.dataURLToBlob(canvas.toDataURL('image/jpeg', 0.8))
+            console.log(canvas.toDataURL('image/png', 0.8))
+            const blob = this.dataURLToBlob(canvas.toDataURL('image/png', 0.8))
             file.push({ file: new window.File([blob], 'effectImg') })
 
             // this.src = URL.createObjectURL(file[0].file)

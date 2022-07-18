@@ -154,6 +154,7 @@ export default {
         try {
           const canvas = document.createElement('canvas')
           const context = canvas.getContext('2d')
+          context.fillStyle = 'rgba(255, 255, 255, 0)'
           canvas.width = width
           canvas.height = height
           const iconImage = new Image()
@@ -161,7 +162,7 @@ export default {
           iconImage.src = url
           iconImage.onload = () => {
             context.drawImage(iconImage, 0, 0)
-            const blob = this.dataURLToBlob(canvas.toDataURL('image/jpeg', 0.8))
+            const blob = this.dataURLToBlob(canvas.toDataURL('image/png', 0.8))
             resolve({ blob: blob })
           }
         } catch (error) {

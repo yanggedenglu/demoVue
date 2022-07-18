@@ -19,6 +19,7 @@ export default {
       // 创建canvas喜爱那个
       var canvas = document.createElement('canvas')
       var ctx = canvas.getContext('2d')
+      ctx.fillStyle = 'rgba(255, 255, 255, 0)'
       canvas.width = 500
       canvas.height = 1000
       // 获取图片对象
@@ -34,7 +35,7 @@ export default {
       saveImage.src = canvas.toDataURL('image/png')
       saveImage.onload = () => {
         threectx.drawImage(canvas, 0, 0)
-        console.log(canvas.toDataURL('image/jpeg', 0.8))
+        console.log(canvas.toDataURL('image/png'))
       }
     }
   }
