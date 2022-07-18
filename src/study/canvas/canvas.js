@@ -51,6 +51,8 @@ function drawPicture() {
         roundRect(ctx, 20, 520, 150, 150, 30)
         ctx.drawImage(threeImage, 0, 0)
         ctx.restore()
+
+        console.log(canvas.toDataURL('image/png'))
       }
 
       // canvas画布转为blob

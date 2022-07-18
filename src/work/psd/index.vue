@@ -13,9 +13,11 @@
       <i class="el-icon-upload" />
       <div class="el-upload__text">点击添加或拖放PSD文件</div>
     </el-upload>
+    <img :src="src">
     <span slot="footer" class="dialog-footer">
       <el-button type="primary" @click="exportData">上传</el-button>
     </span>
+    <canvas id="three" width="500" height="1000" style="border: solid 1px #000" />
   </div>
 </template>
 
@@ -27,7 +29,8 @@ export default {
       fileList: [],
       textList: [],
       imageList: [], // image base64列表
-      l_background: ''
+      l_background: '',
+      src: ''
     }
   },
   methods: {
@@ -91,15 +94,10 @@ export default {
                 this.textList.push(this.setImageData(false, _export_childrens[i], i_child[j], '', name))
               }
             }
-            try {
-              // 截取组件效果图
-              const end = i_child[i_child.length - 1]
-              this.canvasEffectImage(end).then(res => {
-                console.log(res)
-              })
-            } catch (err) {
-              console.log(err)
-            }
+
+            // 裁剪预览图，默认图层文件夹中最后一个图层
+            const lastImg = i_child[i_child.length - 1]
+            this.canvasEffectImage(this.l_background, lastImg, i)
           }
         }
       })
@@ -123,8 +121,6 @@ export default {
       const y = ((top - m_mkdir_top) / m_mkdir_height).toFixed(3)
       const w = (width / m_mkdir_width).toFixed(3)
       const h = (height / m_mkdir_height).toFixed(3)
-      // console.log('组件', 'w: ' + m_mkdir_width, 'h: ' + m_mkdir_height, 'l: ' + m_mkdir_left, 't: ' + m_mkdir_top)
-      // console.log('控件', 'w: ' + width, 'h: ' + height, 'l: ' + left, 't: ' + top, name, text)
       if (isText) {
         const { alignment, colors, sizes, names } = text.font
         const { yy } = text.transform
@@ -141,21 +137,40 @@ export default {
     },
 
     // 裁剪图片
-    canvasEffectImage(image) {
+    canvasEffectImage(url, lastImg) {
       return new Promise((resolve, reject) => {
         try {
+          // 新建模糊画布 用作裁剪
+          // const agacanvas = document.createElement('canvas')
+          // const agactx = agacanvas.getContext('2d')
+          // agacanvas.width = lastImg.width
+          // agacanvas.height = lastImg.height
+
+          const file = []
           const canvas = document.createElement('canvas')
+          // const canvas = document.getElementById('three')
           const context = canvas.getContext('2d')
-          canvas.width = image.width
-          canvas.height = image.height
+          canvas.width = lastImg.width
+          canvas.height = lastImg.height
           const iconImage = new Image()
           iconImage.crossOrigin = 'Anonymous'
-          iconImage.src = this.l_background
+          iconImage.src = url
           iconImage.onload = () => {
-            context.drawImage(iconImage, image.left, image.top, image.width, image.height, 0, 0, image.width, image.height)
-            // console.log(canvas.toDataURL('image/jpeg', 0.8))
+            this.roundRect(context, 0, 0, lastImg.width, lastImg.height, 22)
+            context.drawImage(iconImage, lastImg.left, lastImg.top, lastImg.width, lastImg.height, 0, 0, lastImg.width, lastImg.height)
+            console.log(canvas.toDataURL('image/jpeg', 0.8))
             const blob = this.dataURLToBlob(canvas.toDataURL('image/jpeg', 0.8))
-            resolve({ blob: blob })
+            file.push({ file: new window.File([blob], 'effectImg') })
+
+            // this.src = URL.createObjectURL(file[0].file)
+            // const image = new Image()
+            // image.crossOrigin = 'Anonymous'
+            // image.src = URL.createObjectURL(file[0].file)
+            // image.onload = () => {
+            //   this.roundRect(agactx, 0, 0, lastImg.width, lastImg.height, 22)
+            //   agactx.drawImage(image, 0, 0)
+            //   console.log(agacanvas.toDataURL('image/jpeg', 0.8))
+            // }
           }
         } catch (error) {
           reject(error)
@@ -175,49 +190,49 @@ export default {
         return
       }
 
-      this.$refs.form.validate((valid) => {
-        if (valid) {
-          this.loading = true
-          const formData = new FormData()
-          formData.append('name', this.form.name)
-          formData.append('sequence', this.form.sequence)
-          formData.append('themeId', this.form.themeId)
-          // 客户端绘制顺序和图层顺序相反
-          const data = this.textList.reverse()
-          for (let i = 0; i < data.length; i++) {
-            const text = data[i]
-            formData.append('psdList[' + i + '].mkdirName', text.mkdirName)
-            formData.append('psdList[' + i + '].x', text.x)
-            formData.append('psdList[' + i + '].y', text.y)
-            formData.append('psdList[' + i + '].w', text.w)
-            formData.append('psdList[' + i + '].h', text.h)
-            formData.append('psdList[' + i + '].fontAlign', text.fontAlign)
-            formData.append('psdList[' + i + '].fontColor', text.fontColor)
-            formData.append('psdList[' + i + '].fontSize', text.fontSize)
-            formData.append('psdList[' + i + '].fontSpace', text.fontSpace)
-            formData.append('psdList[' + i + '].fontFamily', text.fontFamily)
-            formData.append('psdList[' + i + '].textType', text.textType)
-            formData.append('psdList[' + i + '].textStyle', text.textStyle)
-            formData.append('psdList[' + i + '].type', text.type)
-          }
+      // this.$refs.form.validate((valid) => {
+      //   if (valid) {
+      //     this.loading = true
+      //     const formData = new FormData()
+      //     formData.append('name', this.form.name)
+      //     formData.append('sequence', this.form.sequence)
+      //     formData.append('themeId', this.form.themeId)
+      //     // 客户端绘制顺序和图层顺序相反
+      //     const data = this.textList.reverse()
+      //     for (let i = 0; i < data.length; i++) {
+      //       const text = data[i]
+      //       formData.append('psdList[' + i + '].mkdirName', text.mkdirName)
+      //       formData.append('psdList[' + i + '].x', text.x)
+      //       formData.append('psdList[' + i + '].y', text.y)
+      //       formData.append('psdList[' + i + '].w', text.w)
+      //       formData.append('psdList[' + i + '].h', text.h)
+      //       formData.append('psdList[' + i + '].fontAlign', text.fontAlign)
+      //       formData.append('psdList[' + i + '].fontColor', text.fontColor)
+      //       formData.append('psdList[' + i + '].fontSize', text.fontSize)
+      //       formData.append('psdList[' + i + '].fontSpace', text.fontSpace)
+      //       formData.append('psdList[' + i + '].fontFamily', text.fontFamily)
+      //       formData.append('psdList[' + i + '].textType', text.textType)
+      //       formData.append('psdList[' + i + '].textStyle', text.textStyle)
+      //       formData.append('psdList[' + i + '].type', text.type)
+      //     }
 
-          this.imageList.forEach(item => {
-            formData.append('imageList', item.file)
-          })
-          // WidgetPsdApi.upload(formData).then(res => {
-          //   if (res.result) {
-          //     this.$message.success('上传成功')
-          //     this.fileList = []
-          //     this.removePSD()
-          //     this.handleClose()
-          //     this.$emit('refresh')
-          //   }
-          // }).catch(err => {
-          //   this.loading = false
-          //   this.$message.error(err)
-          // })
-        }
-      })
+      //     this.imageList.forEach(item => {
+      //       formData.append('imageList', item.file)
+      //     })
+      // WidgetPsdApi.upload(formData).then(res => {
+      //   if (res.result) {
+      //     this.$message.success('上传成功')
+      //     this.fileList = []
+      //     this.removePSD()
+      //     this.handleClose()
+      //     this.$emit('refresh')
+      //   }
+      // }).catch(err => {
+      //   this.loading = false
+      //   this.$message.error(err)
+      // })
+      // }
+      // })
     },
     removePSD() {
       this.textList = []
@@ -246,6 +261,17 @@ export default {
       return new Blob([u8arr], {
         type: mime
       })
+    },
+    roundRect(ctx, x, y, w, h, r) {
+      ctx.save()
+      if (w < 2 * r) r = w / 2
+      if (h < 2 * r) r = h / 2
+      ctx.moveTo(x + r, y)
+      ctx.arcTo(x + w, y, x + w, y + h, r)
+      ctx.arcTo(x + w, y + h, x, y + h, r)
+      ctx.arcTo(x, y + h, x, y, r)
+      ctx.arcTo(x, y, x + w, y, r)
+      ctx.clip()
     }
   }
 }
