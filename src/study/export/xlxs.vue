@@ -37,7 +37,7 @@ import { saveAs } from 'file-saver'
 import XLSX from 'xlsx'
 import { getList } from '@/api/table'
 import uploadAndProgress from '@/components/uploadAndProgress'
-import { upload } from '@/api/upload'
+import upload from '@/api/upload'
 
 export default {
   components: { uploadAndProgress },

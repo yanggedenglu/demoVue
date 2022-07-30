@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { upload } from '@/api/upload'
+import upload from '@/api/upload'
 import { getCookie } from '@/utils/auth'
 export default {
   name: 'Upload',

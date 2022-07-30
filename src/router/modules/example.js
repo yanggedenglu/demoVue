@@ -14,10 +14,10 @@ const ExampleRouter = {
       meta: { title: '用户信息', icon: 'table' }
     },
     {
-      path: 'test',
-      name: 'ComIndex',
-      component: () => import('@/views/test/index'),
-      meta: { title: '组件', icon: 'table' }
+      path: '​FormData',
+      name: '​FormData',
+      component: () => import('@/views/​formData/index'),
+      meta: { title: '​FormData', icon: 'table' }
     }
   ]
 }
