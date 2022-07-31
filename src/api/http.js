@@ -1,107 +1,109 @@
 import axios from 'axios'
-// import { MessageBox, Message } from 'element-ui'
+import { Message } from 'element-ui'
 import store from '@/store'
 import { getCookie } from '@/utils/auth'
 // 封装axios
 // create an axios instance 创建一个axios实例
 const BASE_URL = 'http://localhost:8000/'
-const service = axios.create({
-  baseURL: BASE_URL, // url = base url + request url
+const http = axios.create({
   timeout: 500000 // request timeout
 })
 
-// request interceptor 请求拦截
-service.interceptors.request.use(
+// request拦截器
+http.interceptors.request.use(
   config => {
-    // if (store.getters.token) {
-    //   config.headers['CToken'] = getCookie()
-    // }
+    if (!config.headers) {
+      config.headers = {}
+    }
     if (store.getters.token) {
-      // let each request carry token
-      // ['X-Token'] is a custom headers key
-      // please modify it according to the actual situation
       config.headers['CToken'] = getCookie()
     }
+    config.headers['Content-Type'] = 'application/json;charset=UTF-8'
     return config
   },
   error => {
-    console.log(error) // for debug
+    console.log('http interceptors error : {}', error)
     return Promise.reject(error)
   }
 )
 
-// // response interceptor
-// service.interceptors.response.use(
-//   response => {
-//     const res = response.data
-//     if (res.code !== 20000 && res.code !== 50000) {
-//       Message({
-//         message: res.message || 'Error',
-//         type: 'error',
-//         duration: 5 * 1000
-//       })
+// response拦截器
+http.interceptors.response.use(
+  response => {
+    const res = response.data
+    return res
+  },
+  error => {
+    console.log('err' + error) // for debug
+    Message({
+      message: error.message,
+      type: 'error',
+      duration: 5 * 1000
+    })
+    return Promise.reject(error)
+  }
+)
 
-//       if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
-//         // to re-login
-//         MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-//           confirmButtonText: 'Re-Login',
-//           cancelButtonText: 'Cancel',
-//           type: 'warning'
-//         }).then(() => {
-//           store.dispatch('user/resetToken').then(() => {
-//             location.reload()
-//           })
-//         })
-//       }
-//       return Promise.reject(new Error(res.message || 'Error'))
-//     } else {
-//       return res
-//     }
-//   },
-//   error => {
-//     console.log('err' + error) // for debug
-//     Message({
-//       message: error.message,
-//       type: 'error',
-//       duration: 5 * 1000
-//     })
-//     return Promise.reject(error)
-//   }
-// )
-
-function get(url) {
-  return service({
-    url: BASE_URL + url,
-    method: 'get'
+/**
+ * 发送请求
+ * @param {string} url 请求的URL
+ * @param {string} method 请求的方法
+ * @param {data} data 请求的数据
+ * @param {string} responseType 响应数据的格式
+ */
+function request(url, method, data, headers, responseType = 'json') {
+  // 因为下面的ENV是在外面初始化的，所以这里做URL的拼接
+  url = BASE_URL + url
+  return http({
+    url: url,
+    method: method,
+    headers: headers,
+    data: data,
+    responseType: responseType
   })
 }
 
-function post(url, data) {
-  return service({
-    url: BASE_URL + url,
-    method: 'post',
-    data,
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    }
-  })
+/**
+ * 发送GET请求
+ * @param {string} url 请求的URL
+ * @param {array} headers 请求的头信息
+ * @param {string} responseType 响应的数据格式
+ */
+function get(url, headers, responseType) {
+  return request(url, 'get', null, headers, responseType)
 }
 
-function del(url) {
-  return service({
-    url: BASE_URL + url,
-    method: 'delete'
-  })
+/**
+ * 发送POST请求
+ * @param {string} url 请求的URL
+ * @param {data} data 请求的数据
+ * @param {array} headers 请求的头信息
+ * @param {string} responseType 响应数据的格式
+ */
+function post(url, data, headers, responseType) {
+  return request(url, 'post', data, headers, responseType)
 }
 
-function put(url, data) {
-  return service({
-    url: BASE_URL + url,
-    method: 'put',
-    data
-  })
+/**
+ * 发送PUT请求
+ * @param {string} url 请求的URL
+ * @param {data} data 请求的数据
+ * @param {array} headers 请求的头信息
+ * @param {string} responseType 响应数据的格式
+ * @returns
+ */
+function put(url, data, headers, responseType) {
+  return request(url, 'put', data, headers, responseType)
+}
+
+/**
+ * 发送DELETE请求
+ * @param {string} url 请求的URL
+ */
+function del(url, headers) {
+  return request(url, 'delete', null, headers, null)
 }
 
 export default {
-  get, post, del, put
+  get, post, put, del
 }

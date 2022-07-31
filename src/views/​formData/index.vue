@@ -33,6 +33,8 @@ export default {
       fileList: []
     }
   },
+  mounted() {
+  },
   methods: {
     onChange(file, fileList) {
       this.fileList = []
@@ -43,16 +45,9 @@ export default {
     },
     upload() {
       console.log(this.fileList)
-      const formData = new FormData()
-      formData.append('file', this.fileList[0])
-      formData.append('time', 20220730)
-      for (var i = 0; i < 3; i++) {
-        formData.append('bean[' + i + '].year', 2022 + i)
-        formData.append('bean[' + i + '].month', 7 + i)
-        formData.append('bean[' + i + '].day', 30 + i)
-      }
+      const form = { 'time': 3366 }
 
-      UploadApi.formData(formData).then(res => {
+      UploadApi.formData(form).then(res => {
         this.$message.success(res)
       }).catch(err => {
         this.$message.error(err)
