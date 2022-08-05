@@ -74,7 +74,7 @@ import testslot from '../slot/slot.vue'
 import first from '../component/first.vue'
 import second from '../component/second.vue'
 
-import { upload } from '@/api/upload'
+import upload from '@/api/upload'
 import uploadAndProgress from '../upload/upload-and-progress.vue'
 export default {
   components: {

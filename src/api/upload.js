@@ -1,6 +1,7 @@
 import request from '@/utils/request'
+import http from './http'
 
-export function upload(data) {
+function upload(data) {
   return request({
     url: 'http://localhost:8000/upload',
     method: 'post',
@@ -11,7 +12,7 @@ export function upload(data) {
   })
 }
 
-export function upload2(data) {
+function upload2(data) {
   return request({
     url: 'http://localhost:8000/upload2',
     method: 'post',
@@ -20,4 +21,12 @@ export function upload2(data) {
       'Content-Type': 'multipart/form-data'
     }
   })
+}
+
+function formData(data) {
+  return http.post('formData', data)
+}
+
+export default {
+  upload, upload2, formData
 }
