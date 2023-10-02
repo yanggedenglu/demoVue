@@ -18,6 +18,12 @@ const workLayout = {
       name: 'psd',
       component: () => import('@/work/psd/index'),
       meta: { title: 'psd', icon: 'form' }
+    },
+    {
+      path: 'tree',
+      name: 'tree',
+      component: () => import('@/work/tree/index'),
+      meta: { title: 'tree', icon: 'form' }
     }
   ]
 }

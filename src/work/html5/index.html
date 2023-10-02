@@ -1,0 +1,42 @@
+<html>
+<head>
+  <script>
+    function changeColor(color) {
+      for (let i = 0; i < arguments.length; i++) {
+        console.log(arguments[i])
+      }
+      var tt = document.getElementById('colorTable')
+      tt.style.backgroundColor = color
+    }
+  </script>
+</head>
+<body>
+  <div>
+    <table>
+      <tr height="24">
+        <td width="24" style="background: red;" onclick="changeColor('red', 'ccc', 'ddd')"></td>
+        <td width="24" style="background: blue;" onclick="changeColor('blue')"></td>
+        <td width="24" style="background: green;" onclick="changeColor('green')"></td>
+      </tr>
+    </table>
+    <div id="colorTable" style="background: #000; width: 50px; height: 50px;">333</div>
+
+    <div id="elem1"></div>
+    <div id="elem2"></div>
+
+  </div>
+</body>
+<script>
+  var table = document.getElementById('colorTable')
+  console.log(table.innerHTML)
+  console.log(table.outerHTML)
+  console.log(table.textContent)
+
+  let name = "<b>Winnie-the-Pooh!</b>"
+  elem1.innerHTML = name;
+  elem2.textContent = name;
+  setInterval(() => {
+    elem2.hidden = !elem2.hidden
+  }, 1000);
+</script>
+</html>

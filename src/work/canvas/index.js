@@ -1,53 +1,6 @@
-// import Draw from './draw'
-
-// const TARGET_WIDTH = 1284
-// const TARGET_HEIGHT = 2778
-// const THUMBNAIL_SCALE = 0.8
-
-// /**
-//  * 画锁屏预览图
-//  * @param {*} wallpaperSrc
-//  * @param {*} fontColor
-//  */
-// function drawLockPreview(wallpaperSrc, fontColor) {
-//   const promise = new Promise((resolve, reject) => {
-//     try {
-//       const canvas = document.createElement('canvas')
-//       const context = canvas.getContext('2d')
-//       const wallpaperImg = new Image()
-//       wallpaperImg.crossOrigin = 'Anonymous'
-//       wallpaperImg.src = wallpaperSrc
-//       wallpaperImg.onload = () => {
-//         canvas.width = TARGET_WIDTH
-//         canvas.height = TARGET_HEIGHT
-//         // 计算比例 如果目标高/宽比 小于 所给壁纸 说明壁纸的 高度更高 所以宽自适应 高需要裁减 反之同理
-//         if (TARGET_HEIGHT / TARGET_WIDTH <= wallpaperImg.height / wallpaperImg.width) {
-//           const cjHeight = wallpaperImg.width * TARGET_HEIGHT / TARGET_WIDTH
-//           context.drawImage(wallpaperImg, 0, (wallpaperImg.height - cjHeight) / 2, wallpaperImg.width, cjHeight, 0, 0, TARGET_WIDTH, TARGET_HEIGHT)
-//         } else {
-//           const cjWidth = wallpaperImg.height * TARGET_WIDTH / TARGET_HEIGHT
-//           context.drawImage(wallpaperImg, (wallpaperImg.width - cjWidth) / 2, 0, cjWidth, wallpaperImg.height, 0, 0, TARGET_WIDTH, TARGET_HEIGHT)
-//         }
-
-//         const lockMaskImg = new Image()
-//         lockMaskImg.crossOrigin = 'Anonymous'
-//         lockMaskImg.src = fontColor === '000000' ? 'static/img/lock_mask_black.png' : 'static/img/lock_mask_white.png'
-//         lockMaskImg.onload = () => {
-//           context.drawImage(lockMaskImg, 0, 0, TARGET_WIDTH, TARGET_HEIGHT)
-//           const blob = dataURLToBlob(canvas.toDataURL('image/jpeg', THUMBNAIL_SCALE))
-//           resolve({
-//             file: new window.File([blob], 'lockscreen.jpg'),
-//             url: window.URL.createObjectURL(blob),
-//             fileName: 'lockscreen.jpg'
-//           })
-//         }
-//       }
-//     } catch (error) {
-//       reject(error)
-//     }
-//   })
-//   return promise
-// }
+const TARGET_WIDTH = 1284
+const TARGET_HEIGHT = 2778
+const THUMBNAIL_SCALE = 0.8
 
 // /**
 //  * 画桌面预览图
@@ -188,38 +141,38 @@
 //   return promise
 // }
 
-// function drawPreviewWidget(preview_widget) {
-//   const promise = new Promise((resolve, reject) => {
-//     try {
-//       const canvas = document.createElement('canvas')
-//       const context = canvas.getContext('2d')
-//       const wallpaperImg = new Image()
-//       wallpaperImg.crossOrigin = 'Anonymous'
-//       wallpaperImg.src = preview_widget
-//       wallpaperImg.onload = () => {
-//         canvas.width = TARGET_WIDTH
-//         canvas.height = TARGET_HEIGHT
-//         // 计算比例 如果目标高/宽比 小于 所给壁纸 说明壁纸的 高度更高 所以宽自适应 高需要裁减 反之同理
-//         if (TARGET_HEIGHT / TARGET_WIDTH <= wallpaperImg.height / wallpaperImg.width) {
-//           const cjHeight = wallpaperImg.width * TARGET_HEIGHT / TARGET_WIDTH
-//           context.drawImage(wallpaperImg, 0, (wallpaperImg.height - cjHeight) / 2, wallpaperImg.width, cjHeight, 0, 0, TARGET_WIDTH, TARGET_HEIGHT)
-//         } else {
-//           const cjWidth = wallpaperImg.height * TARGET_WIDTH / TARGET_HEIGHT
-//           context.drawImage(wallpaperImg, (wallpaperImg.width - cjWidth) / 2, 0, cjWidth, wallpaperImg.height, 0, 0, TARGET_WIDTH, TARGET_HEIGHT)
-//         }
-//         const blob = dataURLToBlob(canvas.toDataURL('image/jpeg', THUMBNAIL_SCALE))
-//         resolve({
-//           file: new window.File([blob], 'preview_widgets.jpg'),
-//           url: window.URL.createObjectURL(blob),
-//           fileName: 'preview_widgets.jpg'
-//         })
-//       }
-//     } catch (error) {
-//       reject(error)
-//     }
-//   })
-//   return promise
-// }
+function drawPreviewWidget(preview_widget) {
+  const promise = new Promise((resolve, reject) => {
+    try {
+      const canvas = document.createElement('canvas')
+      const context = canvas.getContext('2d')
+      const wallpaperImg = new Image()
+      wallpaperImg.crossOrigin = 'Anonymous'
+      wallpaperImg.src = preview_widget
+      wallpaperImg.onload = () => {
+        canvas.width = TARGET_WIDTH
+        canvas.height = TARGET_HEIGHT
+        // 计算比例 如果目标高/宽比 小于 所给壁纸 说明壁纸的 高度更高 所以宽自适应 高需要裁减 反之同理
+        if (TARGET_HEIGHT / TARGET_WIDTH <= wallpaperImg.height / wallpaperImg.width) {
+          const cjHeight = wallpaperImg.width * TARGET_HEIGHT / TARGET_WIDTH
+          context.drawImage(wallpaperImg, 0, (wallpaperImg.height - cjHeight) / 2, wallpaperImg.width, cjHeight, 0, 0, TARGET_WIDTH, TARGET_HEIGHT)
+        } else {
+          const cjWidth = wallpaperImg.height * TARGET_WIDTH / TARGET_HEIGHT
+          context.drawImage(wallpaperImg, (wallpaperImg.width - cjWidth) / 2, 0, cjWidth, wallpaperImg.height, 0, 0, TARGET_WIDTH, TARGET_HEIGHT)
+        }
+        const blob = dataURLToBlob(canvas.toDataURL('image/jpeg', THUMBNAIL_SCALE))
+        resolve({
+          file: new window.File([blob], 'preview_widgets.jpg'),
+          url: window.URL.createObjectURL(blob),
+          fileName: 'preview_widgets.jpg'
+        })
+      }
+    } catch (error) {
+      reject(error)
+    }
+  })
+  return promise
+}
 
 // /**
 //  * 画圆角
@@ -242,39 +195,48 @@
 //   ctx.clip()
 // }
 
-// /**
-//  * dataurl转blob
-//  * @param {*} dataurl
-//  * @returns
-//  */
-// function dataURLToBlob(dataurl) {
-//   const arr = dataurl.split(',')
-//   const mime = arr[0].match(/:(.*?);/)[1]
-//   const bstr = atob(arr[1])
-//   let n = bstr.length
-//   const u8arr = new Uint8Array(n)
-//   while (n--) {
-//     u8arr[n] = bstr.charCodeAt(n)
-//   }
-//   return new Blob([u8arr], {
-//     type: mime
-//   })
-// }
+/**
+ * dataurl转blob
+ * @param {*} dataurl
+ * @returns
+ */
+function dataURLToBlob(dataurl) {
+  const arr = dataurl.split(',')
+  const mime = arr[0].match(/:(.*?);/)[1]
+  const bstr = window.atob(arr[1])
+  let n = bstr.length
+  const u8arr = new Uint8Array(n)
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n)
+  }
+  return new Blob([u8arr], {
+    type: mime
+  })
+}
 
-// // 画椭圆 填充
-// function drawRoundedRect(ctx, x, y, width, height, radius, type) {
-//   ctx.get
-//   ctx.moveTo(x, y + radius)
-//   ctx.beginPath()
-//   ctx.arc(x + radius, y + radius, radius, Math.PI, 1.5 * Math.PI)
-//   ctx.arc(x + width - radius, y + radius, radius, 1.5 * Math.PI, 2 * Math.PI)
-//   ctx.arc(x + width - radius, y + height - radius, radius, 0, 0.5 * Math.PI)
-//   ctx.arc(x + radius, y + height - radius, radius, 0.5 * Math.PI, Math.PI)
-//   ctx.closePath()
-//   const method = type || 'stroke' // 默认描边，传入fill即可填充矩形
-//   ctx[method]()
-// }
+/**
+ * // 画椭圆 填充
+ * @param {*} ctx 画布
+ * @param {*} x 据x轴距离
+ * @param {*} y 据y轴距离
+ * @param {*} width 椭圆宽度
+ * @param {*} height 椭圆高度
+ * @param {*} radius 角度
+ * @param {*} type 描边类型
+ */
+function drawRoundedRect(ctx, x, y, width, height, radius, type) {
+  ctx.get
+  ctx.moveTo(x, y + radius)
+  ctx.beginPath()
+  ctx.arc(x + radius, y + radius, radius, Math.PI, 1.5 * Math.PI)
+  ctx.arc(x + width - radius, y + radius, radius, 1.5 * Math.PI, 2 * Math.PI)
+  ctx.arc(x + width - radius, y + height - radius, radius, 0, 0.5 * Math.PI)
+  ctx.arc(x + radius, y + height - radius, radius, 0.5 * Math.PI, Math.PI)
+  ctx.closePath()
+  const method = type || 'stroke' // 默认描边，传入fill即可填充矩形
+  ctx[method]()
+}
 
-// export default {
-//   drawLockPreview, drawthirdPreview, dataURLToBlob, drawPreviewWidget
-// }
+export default {
+  dataURLToBlob, drawPreviewWidget, drawRoundedRect
+}

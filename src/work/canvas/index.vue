@@ -16,7 +16,7 @@ export default {
   },
   methods: {
     clickButton() {
-      // 创建canvas喜爱那个
+      // 创建canvas
       var canvas = document.createElement('canvas')
       var ctx = canvas.getContext('2d')
       ctx.fillStyle = 'rgba(255, 255, 255, 0)'
